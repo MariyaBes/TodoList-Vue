@@ -6,6 +6,11 @@ const router = createRouter({
     {
       path: '/',
     },
+    {
+      path: '/edit/:noteId',
+      name: 'note-edit',
+      // component: NoteEdit,
+    },
   ]
 })
 
