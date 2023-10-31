@@ -1,14 +1,37 @@
 <template>
-  <div class="task-content-container" v-for="item in items" :key="item.id">
-    <input type="checkbox" :id="'id-' + item.id" class="task-content-container__checkbox">
-    <label :for="'id-' + item.id" class="task-content-container__item">
+  <div class="task-content-container">
+    <div
+        v-for="item in items"
+        :key="item.id"
+        class="task-content-container__ul"
+    >
+      <ul class="task-content-points-list">
+        <li
+            v-for="point in item.points"
+            :key="point.pointId"
+            class="task-content-points-list__item"
+        >
+          <input
+              type="checkbox"
+              :id="'id-' + point.pointId"
+              class="points-list__checkbox"
+          >
+          <label
+              :for="'id-' + point.pointId"
+              class="points-list__label"
+          >
             <span class="cbx">
               <svg width="14px" height="12px" viewBox="0 0 14 12">
                 <polyline points="1 7.6 5 11 13 1"></polyline>
               </svg>
             </span>
-      <span class="task-content-container__text">{{ item.title }}</span>
-    </label>
+            <span class="points-list__label-text">
+              {{ point.text }}
+            </span>
+          </label>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -21,18 +44,32 @@ export default {
 </script>
 
 <style scoped>
-.task-content-container input[type="checkbox"] {
+.task-content-points-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.points-list__checkbox {
   display: none;
 }
 
+.points-list__label {
+  display: flex;
+  align-items: center;
+  cursor: default;
+  margin-bottom: 2px;
+}
+
+.task-content-points-list__item {
+  padding: 3px;
+}
+
 .task-content-container .cbx {
-  display: inline-flex;
   width: 15px;
   height: 15px;
   margin-right: 6px;
   border: 1px solid #9098a9;
   border-radius: 10px;
-  cursor: pointer;
 }
 
 .task-content-container .cbx svg {
@@ -40,45 +77,19 @@ export default {
   stroke-linecap: round;
   stroke-linejoin: round;
   transform-origin: center;
-  transform: scale(0);
-  transition: all 0.4s ease;
-  transition-delay: 0.1s;
 }
 
-.task-content-container .task-content-container__item .cbx svg polyline {
-  stroke-width: 2;
-  stroke: #2DD4BF;
+.task-content-container .point-checkbox:checked + .point-label .cbx svg polyline {
+  display: block;
 }
 
-.task-content-container .task-content-container__item .task-content-container__text {
-  position: relative;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.task-content-container .task-content-container__item input {
-  display: none;
-}
-
-.task-content-container input[type="checkbox"]:checked + .task-content-container__item .cbx {
-  border-color: transparent;
-}
-
-.task-content-container input[type="checkbox"]:checked + .task-content-container__item .cbx svg {
-  transform: scale(1);
-  stroke: #2DD4BF;
-}
-
-.task-content-container input[type="checkbox"]:checked + .task-content-container__item .task-content-container__text {
-  color: #9098a9;
-  text-decoration: line-through;
-}
-
-.task-content-container__text {
+.points-list__label-text {
   color: #333333;
   font-size: 14px;
   font-weight: 400;
-  cursor: pointer;
-  transition: color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
 }
 </style>

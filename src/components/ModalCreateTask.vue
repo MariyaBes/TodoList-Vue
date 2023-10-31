@@ -1,50 +1,77 @@
 <template>
-  <div v-if="show" class="modal-container-back-screen" @click="isVisible">
-    <div @click.stop class="modal-container">
-      <div class="modal-header">
+  <form @submit.prevent>
+    <div
+        v-if="show"
+        class="modal-container-back-screen"
+        @click="isVisible"
+        v-for="note in notes"
+        :key="note.id"
+    >
+      <div
+          @click.stop
+          class="modal-container"
+          v-for="point in note.points"
+          :key="point.pointId"
+      >
+        <div class="modal-header">
           <h2 class="modal-header__title">
             Создать заметку
           </h2>
           <span class="modal-header__line"></span>
-      </div>
-
-      <div class="modal-content">
-        <div class="modal-content-setname">
-          <h2 class="modal-content-setname__text"></h2>
-          <input type="text" class="modal-content-setname__input" placeholder="Название заметки...">
         </div>
 
-        <span class="modal-header__line"></span>
-
-        <div class="modal-content-view-add">
-
-          <div class="modal-content-view-add-list">
-            <IconAdd />
-            <p class="modal-content-view-add-list__text">Сделать лаб. работу №4</p>
+        <div class="modal-content">
+          <div class="modal-content-setname">
+            <h2 class="modal-content-setname__text"></h2>
+            <input
+                :value="note.title"
+                @input="note.title = $event.target.value"
+                type="text"
+                class="modal-content-setname__input"
+                placeholder="Название заметки..."
+            >
           </div>
 
-          <div class="modal-content-view-add-list">
-            <IconAdd />
-            <p class="modal-content-view-add-list__text">Сделать лаб. работу №4</p>
+          <span class="modal-header__line"></span>
+
+          <div class="modal-content-view-add">
+            <div
+                class="modal-content-view-add-list"
+            >
+              <IconAdd />
+              <p class="modal-content-view-add-list__text">
+                {{ point.text }}
+              </p>
+            </div>
+
+          </div>
+
+          <span class="modal-header__line"></span>
+
+          <div class="modal-content-add-new-element">
+            <input
+                :value="point.text"
+                @input="point.text = $event.target.value"
+                type="text"
+                class="modal-content-add-new-element__input"
+                placeholder="Добавить элемент..."
+            >
+          </div>
+
+          <div class="modal-content-event">
+            <button
+                @click="addNewNote"
+                class="modal-content-event__button-success"
+            >
+              Добавить
+            </button>
+            <button @click="isVisible" class="modal-content-event__button-cancel">Отмена</button>
           </div>
 
         </div>
-
-        <span class="modal-header__line"></span>
-
-        <div class="modal-content-add-new-element">
-          <input type="text" class="modal-content-add-new-element__input" placeholder="Добавить элемент...">
-        </div>
-
-        <div class="modal-content-event">
-          <button class="modal-content-event__button-success">Добавить</button>
-          <button @click="isVisible" class="modal-content-event__button-cancel">Отмена</button>
-        </div>
-
       </div>
     </div>
-  </div>
-
+  </form>
 </template>
 
 <script>
@@ -57,12 +84,27 @@ export default {
     show: {
       type: Boolean,
       default: true,
+    },
+    notes: {
+      type: Array,
     }
   },
   methods: {
     isVisible() {
-     this.$emit('update:show', false)
+      this.$emit('update:show', false)
     },
+    addNewNote() {
+      // Собираем данные из инпутов
+      const title = "";
+      const points = [{
+        text: ""
+      }];
+      // Создаем объект newNote
+      const newNote = {title, points};
+      // Вызываем событие addNote и передаем newNote
+      this.$emit("addNote", newNote);
+      this.isVisible();
+    }
   }
 }
 </script>

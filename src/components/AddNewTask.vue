@@ -4,12 +4,10 @@
       <span class="task-new-text">Добавить новую заметку</span>
       <IconPlusNewTask />
     </div>
+    <div>
+      <ModalCreateTask v-model:show="isVisible" @addNote="addNewNote" :notes="notes"/>
+    </div>
   </form>
-
-  <div>
-    <ModalCreateTask v-model:show="isVisible"/>
-  </div>
-
 </template>
 
 <script>
@@ -19,6 +17,11 @@ import ModalCreateTask from "@/components/ModalCreateTask.vue";
 
 export default defineComponent({
   components: {IconPlusNewTask, ModalCreateTask},
+  props: {
+    notes: {
+      type: Array,
+    },
+  },
   data() {
     return {
       isVisible: false
@@ -27,6 +30,10 @@ export default defineComponent({
   methods: {
     openModalCreatedTask() {
       this.isVisible = true
+    },
+    addNewNote(newNote) {
+      this.$emit("addNote", newNote);
+      this.isVisible = false;
     }
   }
 })

@@ -1,62 +1,66 @@
 <template>
-  <div v-if="isVisible" class="task-select-delete">
-    <li class="task-select-delete-list">
-      <IconDelete/>
-      <p class="task-select-delete-list__text">Удалить заметку</p>
-    </li>
+  <form @click="openModalDeleteTask">
+    <div  class="task-select-delete">
+      <li class="task-select-delete-list">
+        <IconDelete class="task-select-delete-list__icon"/>
+      </li>
+    </div>
+  </form>
+
+  <div>
+    <ModalDeleteTask :show="show"  @update:show="show = $event"/>
   </div>
+
 </template>
 
 <script>
 import IconDelete from "@/components/icons/IconDelete.vue";
+import ModalDeleteTask from "@/components/ModalDeleteTask.vue";
 
 export default {
-  components: {IconDelete},
+  components: {ModalDeleteTask, IconDelete},
   props: {
-    isVisible: Boolean,
+    show: Boolean,
   },
   methods: {
-    closeDropdown() {
-      this.$emit("close");
+    openModalDeleteTask() {
+      this.$emit('update:show', true);
     }
   }
 }
 </script>
 
 <style scoped>
+
 .task-select-delete {
   display: flex;
-  position: absolute;
-  margin-left: 83px;
-  margin-top: 75px;
-  width: 240px;
   justify-content: center;
   align-items: center;
   z-index: 10;
-
-  border-radius: 8px;
-  background: white;
-  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.15);
+  width: 32px;
+  height: 32px;
   cursor: pointer;
+  border-radius: 8px;
+  list-style: none;
 }
 
 .task-select-delete:hover {
   background: #eef1f3;
+  transition: all ease-in-out 0.1s;
 }
 
 .task-select-delete-list {
   display: flex;
   justify-content: center;
   align-items: center;
-  list-style: none;
-  gap: 10px;
-  padding: 11px 15px;
 }
 
-.task-select-delete-list__text {
-  color: #EF4444;
-  font-size: 16px;
-  font-weight: 700;
+.task-select-delete-list__icon {
+  fill: #333333;
 }
 
+.task-select-delete-list__icon:hover {
+  fill: #EF4444;
+  transition: color ease-in-out 0.3s;
+}
 </style>

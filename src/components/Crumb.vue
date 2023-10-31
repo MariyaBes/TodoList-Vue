@@ -2,8 +2,8 @@
   <div class="crumb">
     <span class="crumb-line"></span>
     <div class="crumb-title">
-      <IconBurger class="crumb-title__burger"/>
-      <p class="crumb-title__text">Ваш список задач</p>
+      <IconBurger class="crumb-title__burger" />
+      <p class="crumb-title__text">{{ crumbTitle }}</p>
     </div>
     <span class="crumb-line"></span>
   </div>
@@ -11,7 +11,25 @@
 
 <script setup>
 import IconBurger from "@/components/icons/IconBurger.vue";
+import { defineProps, computed } from "vue";
+
+const props = defineProps({
+  titleCrumb: {
+    type: Array,
+    required: true,
+  },
+  crumbId: {
+    type: Number,
+    required: true,
+  },
+});
+
+const crumbTitle = computed(() => {
+  const crumb = props.titleCrumb.find(item => item.id === props.crumbId);
+  return crumb ? crumb.title : "";
+});
 </script>
+
 
 <style scoped>
 

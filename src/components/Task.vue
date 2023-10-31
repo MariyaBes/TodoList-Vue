@@ -1,57 +1,44 @@
 <template>
   <div class="task-container">
-    <div class="task-header">
+    <div
+        v-for="note in notes"
+        :key="note.id"
+        class="task-header"
+    >
+      <p class="task-header__text">{{ note.title }}</p>
 
-      <p class="task-header__text">Обсудить и обозначить
-        задачи проекта</p>
-
-      <div @click="openDelete" class="task-header__button">
-        <IconDotsVertical class="task-header__icon"/>
-      </div>
-      <SelectDelete id="openDialog" :isVisible="isDropdownVisible" @close="closeDropdown"/>
+      <SelectDelete :show="showDeleteModal"/>
 
     </div>
-
     <div class="task-content">
 
-      <Checkbox  :items="name" />
+      <Checkbox  :items="notes" />
 
     </div>
-
     <button class="task-button">
       <span class="task-button-edit">Редактировать</span>
     </button>
-
   </div>
 </template>
 
 <script>
 import IconDotsVertical from "@/components/icons/IconDotsVertical.vue";
-import SelectDelete from "@/components/SelectDelete.vue";
 import Checkbox from "@/components/Checkbox.vue";
+import SelectDelete from "@/components/SelectDelete.vue";
 
 export default {
-  components: {Checkbox, SelectDelete, IconDotsVertical},
+  components: {SelectDelete, Checkbox, IconDotsVertical},
+  props: {
+    notes: {
+      type: Array
+    }
+  },
   data() {
     return {
-      isDropdownVisible: false,
-      name: [
-        {id: 1, title: 'Сформировать новый функционал'},
-        {id: 2, title: 'Определить и назначить роли'},
-        {id: 3, title: 'Обозначить текущий статус проекта'},
-      ],
-    };
-  },
-  methods: {
-    openDelete() {
-      this.isDropdownVisible = !this.isDropdownVisible;
-    },
-    closeDropdown() {
-      this.isDropdownVisible = false;
+      showDeleteModal: false
     }
   }
 }
-
 </script>
 
 <style scoped>
@@ -59,7 +46,7 @@ export default {
 @media (max-width: 1700px) {
   .task-container {
     width: 100%;
-    max-width: 380px;
+    max-width: 387px;
   }
 }
 
@@ -104,22 +91,10 @@ export default {
   max-width: 88%;
 }
 
-.task-header__button {
-  display: flex;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.task-header__button:hover {
-  background: #E5E7EB;
-  border-radius: 5px;
-  transition: all ease-in 0.2s;
-}
-
 .task-content {
   display: flex;
-  padding: 0 28px;
+  width: 100%;
+  padding: 0 24px;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
@@ -131,6 +106,7 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 10px;
+  width: 100%;
   outline: none;
   border: none;
   border-radius: 16px;
@@ -146,8 +122,9 @@ export default {
 
 .task-button-edit {
   color: white;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
+  letter-spacing: 1.1px;
 }
 
 </style>
