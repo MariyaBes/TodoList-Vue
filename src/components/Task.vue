@@ -83,7 +83,7 @@ export default {
   font-weight: 700;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 88%;
+  max-width: 60%;
 }
 
 .task-content {

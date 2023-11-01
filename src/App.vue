@@ -56,10 +56,16 @@ export default defineComponent({
       };
       this.notes.push(newNote);
       this.saveDataToLocalStorage();
+      console.log(newNote)
     },
     saveDataToLocalStorage() {
-      localStorage.setItem('notes', JSON.stringify(this.notes));
-    },
+      try {
+        localStorage.setItem('notes', JSON.stringify(this.notes));
+        console.log('Data saved to localStorage');
+      } catch (error) {
+        console.error('Error saving data to localStorage:', error);
+      }
+    }
   },
   mounted() {
     const savedNotes = localStorage.getItem('notes');

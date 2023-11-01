@@ -77,11 +77,20 @@ export default {
     },
     addNewNote() {
       if (this.currentNote.title) {
-        this.notes.push({...this.currentNote}); // Добавляем текущую заметку в массив
-        this.currentNote = {title: '', points: []}; // Создаем новые объекты для текущей заметки и текущего элемента
+        this.notes.push({ ...this.currentNote }); // Добавляем текущую заметку в массив
+        this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и текущего элемента
         this.currentPoint.text = '';
         this.isListVisible = false; // Скрываем список после добавления заметки
-        this.closeModal(); // Закрытие модального окна при добавлении заметки
+        this.saveDataToLocalStorage(); // Сначала сохраняем данные
+        this.closeModal(); // Закрытие модального окна после сохранения данных
+      }
+    },
+    saveDataToLocalStorage() {
+      try {
+        localStorage.setItem('notes', JSON.stringify(this.notes));
+        console.log('Data saved to localStorage');
+      } catch (error) {
+        console.error('Error saving data to localStorage:', error);
       }
     }
   },
