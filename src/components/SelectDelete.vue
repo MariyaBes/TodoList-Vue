@@ -8,7 +8,7 @@
   </form>
 
   <div>
-    <ModalDeleteTask :show="show"  @update:show="show = $event"/>
+<!--    <ModalDeleteTask :show="show" @update:show="updateShow(true)" @delete-note="deleteNote"/>-->
   </div>
 
 </template>
@@ -21,10 +21,17 @@ export default {
   components: {ModalDeleteTask, IconDelete},
   props: {
     show: Boolean,
+    noteId: String,
+    deleteNote: Function
   },
+  emits: ['delete-note', 'update:show'], // Объявляем события "delete-note" и "update:show"
   methods: {
     openModalDeleteTask() {
-      this.$emit('update:show', true);
+      this.$emit('delete-note'); // Генерируем событие "delete-note" при клике
+      this.updateShow(true); // Вызываем метод для обновления "show"
+    },
+    updateShow(value) {
+      this.$emit('update:show', value); // Генерируем событие "update:show" для обновления "show"
     }
   }
 }

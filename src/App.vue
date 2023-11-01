@@ -10,7 +10,8 @@
 
   <div class="task-area">
 
-    <Task :notes="notes" @addNote="addNewNote"/>
+      <Task v-for="note in notes" :key="note.id" :note="note"/>
+
     <AddNewTask :notes="notes" @addNote="addNewNote"/>
 
   </div>
@@ -23,7 +24,6 @@ import IconCheck from "@/components/icons/IconCheck.vue";
 import Task from "@/components/Task.vue";
 import AddNewTask from "@/components/AddNewTask.vue";
 import Crumb from "@/components/Crumb.vue";
-import ModalCreateTask from "@/components/ModalCreateTask.vue";
 import {defineComponent} from "vue";
 
 export default defineComponent({
@@ -35,10 +35,10 @@ export default defineComponent({
         { id: 2, title: "Выполненные задачи" }
       ],
       notes: [
-        {id: 1, title: '', points: [
-            {pointId: 1, text: ''},
-            {pointId: 2, text: ''},
-            {pointId: 3, text: ''}
+        {id: this.generateUniqueId(), title: 'Новый заметка1', points: [
+            {pointId: this.generateUniqueId(), text: 'Новый элемент1'},
+            {pointId: this.generateUniqueId(), text: 'Новый элемент2'},
+            {pointId: this.generateUniqueId(), text: 'Новый элемент3'}
           ],
         }
       ],
@@ -49,21 +49,17 @@ export default defineComponent({
       return '_' + Math.random().toString(36).substr(2, 9);
     },
     addNewNote() {
-      function generateUniqueId() {
-        return '_' + Math.random().toString(36).substr(2, 9);
-      }
       const newNote = {
-        id: generateUniqueId(),
-        title: '',
-        points: [],
+        id: this.generateUniqueId(),
+        title: 'Новая заметка',
+        points: [{ pointId: this.generateUniqueId(), text: 'Новый элемент' }],
       };
-
       this.notes.push(newNote);
       this.saveDataToLocalStorage();
     },
     saveDataToLocalStorage() {
       localStorage.setItem('notes', JSON.stringify(this.notes));
-    }
+    },
   },
   mounted() {
     const savedNotes = localStorage.getItem('notes');

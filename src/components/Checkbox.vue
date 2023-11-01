@@ -1,33 +1,16 @@
 <template>
   <div class="task-content-container">
-    <div
-        v-for="item in items"
-        :key="item.id"
-        class="task-content-container__ul"
-    >
+    <div class="task-content-container__ul">
       <ul class="task-content-points-list">
-        <li
-            v-for="point in item.points"
-            :key="point.pointId"
-            class="task-content-points-list__item"
-        >
-          <input
-              type="checkbox"
-              :id="'id-' + point.pointId"
-              class="points-list__checkbox"
-          >
-          <label
-              :for="'id-' + point.pointId"
-              class="points-list__label"
-          >
+        <li v-for="(point, pointId) in items.points" :key="pointId" class="task-content-points-list__item">
+          <input type="checkbox" :id="'id-' + pointId" class="points-list__checkbox">
+          <label :for="'id-' + pointId" class="points-list__label">
             <span class="cbx">
               <svg width="14px" height="12px" viewBox="0 0 14 12">
                 <polyline points="1 7.6 5 11 13 1"></polyline>
               </svg>
             </span>
-            <span class="points-list__label-text">
-              {{ point.text }}
-            </span>
+            <span class="points-list__label-text">{{ point.text }}</span>
           </label>
         </li>
       </ul>
@@ -38,7 +21,7 @@
 <script>
 export default {
   props: {
-    items: Array,
+    items: Object,
   }
 }
 </script>

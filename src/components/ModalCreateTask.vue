@@ -1,73 +1,39 @@
 <template>
   <form @submit.prevent>
-    <div
-        v-if="show"
-        class="modal-container-back-screen"
-        @click="isVisible"
-        v-for="note in notes"
-        :key="note.id"
-    >
-      <div
-          @click.stop
-          class="modal-container"
-          v-for="point in note.points"
-          :key="point.pointId"
-      >
+    <div v-if="show" class="modal-container-back-screen" @click.stop="closeModal">
+      <div @click.stop class="modal-container">
         <div class="modal-header">
-          <h2 class="modal-header__title">
-            Создать заметку
-          </h2>
+          <h2 class="modal-header__title">Создать заметку</h2>
           <span class="modal-header__line"></span>
         </div>
-
         <div class="modal-content">
           <div class="modal-content-setname">
             <h2 class="modal-content-setname__text"></h2>
-            <input
-                :value="note.title"
-                @input="note.title = $event.target.value"
-                type="text"
-                class="modal-content-setname__input"
-                placeholder="Название заметки..."
-            >
+            <input v-model="currentNote.title" type="text" class="modal-content-setname__input" placeholder="Название заметки...">
           </div>
-
           <span class="modal-header__line"></span>
-
           <div class="modal-content-view-add">
-            <div
-                class="modal-content-view-add-list"
-            >
-              <IconAdd />
-              <p class="modal-content-view-add-list__text">
-                {{ point.text }}
-              </p>
+            <div class="modal-content-view-add-list" v-if="currentNote.points.length > 0">
+              <ul>
+                <li v-for="(point, index) in currentNote.points" :key="index" class="modal-content-view-add-list__text">
+                  {{ point.text }}
+                </li>
+              </ul>
             </div>
-
           </div>
-
           <span class="modal-header__line"></span>
 
           <div class="modal-content-add-new-element">
-            <input
-                :value="point.text"
-                @input="point.text = $event.target.value"
-                type="text"
-                class="modal-content-add-new-element__input"
-                placeholder="Добавить элемент..."
-            >
+            <input v-model="currentPoint.text" type="text" class="modal-content-add-new-element__input" placeholder="Добавить элемент...">
+
+            <button @click="addTask" class="modal-content-event__button-add"> <IconAdd class="modal-content-event__icon-plus"/></button>
+
           </div>
 
           <div class="modal-content-event">
-            <button
-                @click="addNewNote"
-                class="modal-content-event__button-success"
-            >
-              Добавить
-            </button>
-            <button @click="isVisible" class="modal-content-event__button-cancel">Отмена</button>
+            <button @click="addNewNote" class="modal-content-event__button-success">Добавить</button>
+            <button @click="closeModal" class="modal-content-event__button-cancel">Отмена</button>
           </div>
-
         </div>
       </div>
     </div>
@@ -78,35 +44,48 @@
 import IconAdd from "@/components/icons/IconAdd.vue";
 
 export default {
-  name: 'createTask',
-  components: {IconAdd},
+  name: 'ModalCreateTask',
+  components: { IconAdd },
   props: {
     show: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     notes: {
       type: Array,
-    }
+    },
+  },
+  data() {
+    return {
+      currentNote: { title: '', points: [{ text: '' }] }, // Здесь хранится текущая заметка
+      currentPoint: { text: '' }, // Здесь хранится текущий элемент
+      isListVisible: false, // Переменная для управления видимостью списка
+    };
   },
   methods: {
-    isVisible() {
-      this.$emit('update:show', false)
+    closeModal() {
+      this.$emit('update:show', false);
+      console.log("ModalCreateTask isVisible", this.show);
+    },
+    addTask() {
+      if (this.currentPoint.text) {
+        // Добавляем текущую задачу к текущей заметке
+        this.currentNote.points.push({ text: this.currentPoint.text });
+        this.currentPoint.text = ''; // Очищаем текст для новой задачи
+        this.isListVisible = true; // Показываем список после добавления задачи
+      }
     },
     addNewNote() {
-      // Собираем данные из инпутов
-      const title = "";
-      const points = [{
-        text: ""
-      }];
-      // Создаем объект newNote
-      const newNote = {title, points};
-      // Вызываем событие addNote и передаем newNote
-      this.$emit("addNote", newNote);
-      this.isVisible();
+      if (this.currentNote.title) {
+        this.notes.push({...this.currentNote}); // Добавляем текущую заметку в массив
+        this.currentNote = {title: '', points: []}; // Создаем новые объекты для текущей заметки и текущего элемента
+        this.currentPoint.text = '';
+        this.isListVisible = false; // Скрываем список после добавления заметки
+        this.closeModal(); // Закрытие модального окна при добавлении заметки
+      }
     }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -122,6 +101,7 @@ export default {
   left: 0;
   position: fixed;
   background: rgba(0, 0, 0, 0.30);
+  z-index: 999;
 }
 
 .modal-container {
@@ -203,13 +183,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 2px;
   gap: 24px;
 }
 
 .modal-content-add-new-element {
   display: flex;
   width: 512px;
-  flex-direction: column;
   align-items: flex-start;
   gap: 8px;
   flex-shrink: 0;
@@ -228,6 +208,23 @@ export default {
   font-size: 18px;
   padding: 10px 10px 10px 15px;
   background: white;
+}
+
+.modal-content-event__button-add {
+  display: flex;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 16px;
+  cursor: pointer;
+  background: linear-gradient(90deg, #D9D9D9 0%, #DFDFDF 100%);
+}
+
+.modal-content-event__icon-plus {
+  fill: white;
+}
+
+.modal-content-event__button-add:hover{
+  background: linear-gradient(90deg, #2DD4BF 0%, #5EEAD4 100%);
 }
 
 .modal-content-event {

@@ -24,12 +24,13 @@ export default defineComponent({
   },
   data() {
     return {
-      isVisible: false
+      isVisible: false,
     }
   },
   methods: {
     openModalCreatedTask() {
-      this.isVisible = true
+      this.isVisible = true;
+      console.log("AddNEw",this.isVisible)
     },
     addNewNote(newNote) {
       this.$emit("addNote", newNote);
@@ -37,7 +38,6 @@ export default defineComponent({
     }
   }
 })
-
 </script>
 
 <style scoped>

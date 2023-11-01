@@ -9,7 +9,7 @@
       </div>
 
       <div class="modal-content-event">
-        <button class="modal-content-event__button-danger">Удалить</button>
+        <button @click="deleteNote" class="modal-content-event__button-danger">Удалить</button>
         <button @click="isVisible" class="modal-content-event__button-cancel">Отмена</button>
       </div>
     </div>
@@ -22,11 +22,18 @@ export default {
     show: {
       type: Boolean,
       default: true,
+    },
+    noteId: {
+      type: Number,
     }
   },
   methods: {
     isVisible() {
       this.$emit('update:show', false);
+    },
+    deleteNote() {
+      this.$emit("delete-note", this.noteId);
+      this.isVisible();
     }
   }
 }

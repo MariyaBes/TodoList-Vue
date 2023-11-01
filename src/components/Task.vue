@@ -1,18 +1,11 @@
 <template>
-  <div class="task-container">
-    <div
-        v-for="note in notes"
-        :key="note.id"
-        class="task-header"
-    >
+  <div class="task-container" v-if="note" >
+    <div class="task-header" >
       <p class="task-header__text">{{ note.title }}</p>
-
-      <SelectDelete :show="showDeleteModal"/>
-
+      <SelectDelete :show="showDeleteModal" />
     </div>
     <div class="task-content">
-
-      <Checkbox  :items="notes" />
+      <Checkbox  :items="note" />
 
     </div>
     <button class="task-button">
@@ -28,16 +21,18 @@ import SelectDelete from "@/components/SelectDelete.vue";
 
 export default {
   components: {SelectDelete, Checkbox, IconDotsVertical},
+
   props: {
-    notes: {
-      type: Array
-    }
+    note: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
-      showDeleteModal: false
-    }
-  }
+      showDeleteModal: false,
+    };
+  },
 }
 </script>
 
@@ -124,7 +119,7 @@ export default {
   color: white;
   font-size: 17px;
   font-weight: 700;
-  letter-spacing: 1.1px;
+  letter-spacing: 1px;
 }
 
 </style>
