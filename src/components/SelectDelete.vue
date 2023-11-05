@@ -2,7 +2,7 @@
   <form @click="openModalDeleteTask">
     <div  class="task-select-delete">
       <li class="task-select-delete-list">
-        <IconDelete class="task-select-delete-list__icon"/>
+        <IconDelete @click="console.log(this.notes.id)" class="task-select-delete-list__icon"/>
       </li>
     </div>
   </form>

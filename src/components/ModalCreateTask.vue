@@ -57,38 +57,48 @@ export default {
   },
   data() {
     return {
-      currentNote: { title: '', points: [{ text: '' }] }, // Здесь хранится текущая заметка
-      currentPoint: { text: '' }, // Здесь хранится текущий элемент
+      currentNote: { id: '', title: '', points: [] }, // Здесь хранится текущая заметка
+      currentPoint: { pointId: '', text: '' }, // Здесь хранится текущий элемент
       isListVisible: false, // Переменная для управления видимостью списка
     };
   },
   methods: {
+    generateUniqueId() {
+      // return +Math.floor(Math.random() * (100 - 1 + 1) + 1);
+      return Date.now();
+    },
     closeModal() {
       this.$emit('update:show', false);
       console.log("ModalCreateTask isVisible", this.show);
     },
     addTask() {
       if (this.currentPoint.text) {
+        this.currentPoint.pointId = this.generateUniqueId();
         // Добавляем текущую задачу к текущей заметке
         this.currentNote.points.push({ text: this.currentPoint.text });
         this.currentPoint.text = ''; // Очищаем текст для новой задачи
-        this.isListVisible = true; // Показываем список после добавления задачи
+        this.isListVisible = true;
+
+        console.log(`Пункт в заметке под id - ${this.currentPoint.pointId}`);
       }
     },
     addNewNote() {
-      if (this.currentNote.title) {
+      if (this.currentNote.title && this.currentPoint.pointId) {
+        this.currentNote.id = this.generateUniqueId();
         this.notes.push({ ...this.currentNote }); // Добавляем текущую заметку в массив
         this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и текущего элемента
         this.currentPoint.text = '';
         this.isListVisible = false; // Скрываем список после добавления заметки
-        this.saveDataToLocalStorage(); // Сначала сохраняем данные
-        this.closeModal(); // Закрытие модального окна после сохранения данных
+        console.log(`Заметка под id - ${this.currentNote.id}`);
+
+        this.saveDataToLocalStorage(); // Сохраняем
+        this.closeModal();
       }
     },
     saveDataToLocalStorage() {
       try {
         localStorage.setItem('notes', JSON.stringify(this.notes));
-        console.log(`Ура, сохранилось ${this.notes}`);
+        console.log('Ура, сохранилось');
       } catch (error) {
         console.error('ОШибка:', error);
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="task-container" v-if="note" >
+  <div class="task-container" v-if="note" @click="console.log(this.note.id)">
     <div class="task-header">
       <p class="task-header__text">{{ note.title }}</p>
       <div class="task-header__button">
@@ -75,11 +75,13 @@ export default {
 
 .task-header__text {
   color: #333333;
+  width: 250px;
   font-size: 20px;
   font-weight: 700;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 60%;
+  white-space: nowrap;
+  max-width: 80%;
   margin-right: auto;
 }
 

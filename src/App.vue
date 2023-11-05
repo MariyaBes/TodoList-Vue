@@ -34,26 +34,12 @@ export default defineComponent({
         { id: 1, title: "Ваш список задач" },
         { id: 2, title: "Выполненные задачи" }
       ],
-      notes: [
-        {id: this.generateUniqueId(), title: 'Новый заметка1', points: [
-            {pointId: this.generateUniqueId(), text: 'Новый элемент1'},
-            {pointId: this.generateUniqueId(), text: 'Новый элемент2'},
-            {pointId: this.generateUniqueId(), text: 'Новый элемент3'}
-          ],
-        }
-      ],
+      notes: [ ],
     }
   },
   methods: {
-    generateUniqueId() {
-      return +Math.floor(Math.random() * (100 - 1 + 1) + 1);
-    },
     addNewNote() {
-      const newNote = {
-        id: this.generateUniqueId(),
-        title: 'Новая заметка',
-        points: [{ pointId: this.generateUniqueId(), text: 'Новый элемент' }],
-      };
+      const newNote = { };
       this.notes.push(newNote);
       this.saveDataToLocalStorage();
       console.log(newNote)
@@ -61,13 +47,16 @@ export default defineComponent({
     saveDataToLocalStorage() {
       try {
         localStorage.setItem('notes', JSON.stringify(this.notes));
-        console.log(`Ура, сохранилось ${this.notes.id}`);
       } catch (error) {
         console.error('Ошибка: ', error);
       }
     },
     deleteNote(noteId) {
+      console.log('deleteNote', noteId);
+
       const index = this.notes.findIndex(note => note.id === noteId);
+      console.log('index', index);
+
       this.notes.splice(index, 1);
       this.saveDataToLocalStorage();
     }
