@@ -13,7 +13,7 @@
 <script>
 import IconPlusNewTask from "@/components/icons/IconPlusNewTask.vue";
 import {defineComponent} from "vue";
-import ModalCreateTask from "@/components/ModalCreateTask.vue";
+import ModalCreateTask from "@/components/main/ModalCreateTask.vue";
 
 export default defineComponent({
   components: {IconPlusNewTask, ModalCreateTask},

@@ -30,28 +30,3 @@
   letter-spacing: 6px;
 }
 
-.task-area {
-  display: flex;
-  width: 90%;
-  margin-right: auto;
-  margin-left: auto;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 24px 32px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-}
-
-@media (min-width: 1700px) {
-  .task-area {
-    display: flex;
-    width: 1698px;
-    margin-right: auto;
-    margin-left: auto;
-    align-items: flex-start;
-    align-content: flex-start;
-    flex-wrap: wrap;
-    gap: 32px 50px;
-    margin-bottom: 50px;
-  }
-}

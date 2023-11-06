@@ -11,15 +11,15 @@
 
     </div>
     <button class="task-button">
-      <span class="task-button-edit">Редактировать</span>
+        <span class="task-button-edit" @click="$router.push('/edit-notes')">Редактировать</span>
     </button>
   </div>
 </template>
 
 <script>
 import IconDotsVertical from "@/components/icons/IconDotsVertical.vue";
-import Checkbox from "@/components/Checkbox.vue";
-import SelectDelete from "@/components/SelectDelete.vue";
+import Checkbox from "@/components/general/Checkbox.vue";
+import SelectDelete from "@/components/main/SelectDelete.vue";
 
 export default {
   components: {SelectDelete, Checkbox, IconDotsVertical},
@@ -95,6 +95,10 @@ export default {
   padding: 0 24px;
   flex-direction: column;
   align-items: flex-start;
+  max-width: 85%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   gap: 10px;
 }
 

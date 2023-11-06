@@ -15,7 +15,7 @@
 
 <script>
 import IconDelete from "@/components/icons/IconDelete.vue";
-import ModalDeleteTask from "@/components/ModalDeleteTask.vue";
+import ModalDeleteTask from "@/components/main/ModalDeleteTask.vue";
 
 export default {
   components: {ModalDeleteTask, IconDelete},

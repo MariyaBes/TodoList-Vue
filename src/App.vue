@@ -6,35 +6,30 @@
     </div>
   </header>
 
-  <Crumb :title-crumb="titleCrumb" :crumbId="1"/>
+  <RouterView
+      :titleCrumb="titleCrumb"
+      :notes="notes"
+      :deleteNote="deleteNote"
+      :addNewNote="addNewNote"
+  />
 
-  <div class="task-area">
-
-    <Task v-for="note in notes" :key="note.id" :note="note" @deleteNote="deleteNote"/>
-
-    <AddNewTask :notes="notes" @addNote="addNewNote"/>
-
-  </div>
-
-  <Crumb :title-crumb="titleCrumb" :crumbId="2"/>
 </template>
 
 <script>
 import IconCheck from "@/components/icons/IconCheck.vue";
-import Task from "../../../Todo-list-project/todo-vue/src/components/Task.vue";
-import AddNewTask from "../../../Todo-list-project/todo-vue/src/components/AddNewTask.vue";
-import Crumb from "../../../Todo-list-project/todo-vue/src/components/Crumb.vue";
 import {defineComponent} from "vue";
+import EditNotes from "@/views/EditNotes.vue";
+import MainNotes from "@/views/MainNotes.vue";
 
 export default defineComponent({
-  components: {IconCheck, Crumb, Task, AddNewTask},
+  components: {EditNotes, MainNotes, IconCheck},
   data() {
     return {
       titleCrumb: [
         { id: 1, title: "Ваш список задач" },
         { id: 2, title: "Выполненные задачи" }
       ],
-      notes: [ ],
+      notes: [],
     }
   },
   methods: {
