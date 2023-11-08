@@ -9,13 +9,13 @@ import EditNotes from "@/views/EditNotes.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [{
-        name: 'Main',
+        name: 'main',
         path: '/',
         component: MainNotes,
         props: true
     }, {
-        name: 'Edit',
-        path: '/edit-notes',
+        name: 'edit',
+        path: '/edit-notes/:noteId',
         component: EditNotes,
         props: true
     }]

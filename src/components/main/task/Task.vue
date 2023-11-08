@@ -10,7 +10,7 @@
       <Checkbox  :items="note" />
 
     </div>
-    <button class="task-button" @click="$router.push('/edit-notes')">
+    <button class="task-button" @click="$router.push({ name: 'edit', params: {noteId: note.id}})">
         <span class="task-button-edit">Редактировать</span>
     </button>
   </div>

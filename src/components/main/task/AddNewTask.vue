@@ -9,7 +9,6 @@
           v-model:show="isVisible"
           @addNote="addNewNote"
           :notes="notes"
-          :titleButton="titleButton[0]"
       />
     </div>
   </form>
@@ -26,9 +25,6 @@ export default defineComponent({
     notes: {
       type: Array,
     },
-    titleButton: {
-      type: Array
-    }
   },
   data() {
     return {
@@ -38,7 +34,7 @@ export default defineComponent({
   methods: {
     openModalCreatedTask() {
       this.isVisible = true;
-      console.log("AddNEw",this.isVisible)
+      console.log("AddNEw",this.isVisible);
     },
     addNewNote(newNote) {
       this.$emit("addNote", newNote);

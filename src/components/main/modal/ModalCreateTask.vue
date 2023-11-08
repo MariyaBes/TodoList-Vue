@@ -6,7 +6,7 @@
           <h2 class="modal-header__title">Создать заметку</h2>
           <span class="modal-header__line"></span>
         </div>
-        <div class="modal-content">
+        <div class="container-edit">
           <div class="modal-content-setname">
             <h2 class="modal-content-setname__text"></h2>
             <input v-model="currentNote.title" type="text" class="modal-content-setname__input" placeholder="Название заметки...">
@@ -26,15 +26,14 @@
           <div class="modal-content-add-new-element">
             <input v-model="currentPoint.text" type="text" class="modal-content-add-new-element__input" placeholder="Добавить элемент...">
 
-            <button @click="addTask" class="modal-content-event__button-add"> <IconAdd class="modal-content-event__icon-plus"/></button>
+            <ButtonAdd @addTask="addTask"/>
 
           </div>
 
-          <Button
-              :addNewNote="addNewNote"
-              :closeModal="closeModal"
-              :titleButton="titleButton"
-          />
+          <div class="modal-content-event">
+            <button @click="addNewNote" class="modal-content-event__button-success">Добавить</button>
+            <button @click="closeModal" class="modal-content-event__button-cancel">Отмена</button>
+          </div>
         </div>
       </div>
     </div>
@@ -43,11 +42,11 @@
 
 <script>
 import IconAdd from "@/components/icons/IconAdd.vue";
-import Button from "@/components/general/Button.vue";
+import ButtonAdd from "@/components/general/ButtonAdd.vue";
 
 export default {
   name: 'ModalCreateTask',
-  components: {Button, IconAdd },
+  components: {ButtonAdd, IconAdd },
   props: {
     show: {
       type: Boolean,
@@ -55,9 +54,6 @@ export default {
     },
     notes: {
       type: Array,
-    },
-    titleButton: {
-      type: Object
     }
   },
   data() {
@@ -90,7 +86,7 @@ export default {
     addNewNote() {
       if (this.currentNote.title && this.currentPoint.pointId) {
         this.currentNote.id = this.generateUniqueId();
-        this.notes.push({ ...this.currentNote }); // Добавляем текущую заметку в массив
+        this.notes.push({ ...this.currentNote });
         this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и текущего элемента
         this.currentPoint.text = '';
         this.isListVisible = false; // Скрываем список после добавления заметки
@@ -162,7 +158,7 @@ export default {
   background: #D1D5DB;
 }
 
-.modal-content {
+.container-edit {
   display: flex;
   width: 512px;
   flex-direction: column;
@@ -233,21 +229,55 @@ export default {
   background: white;
 }
 
-.modal-content-event__button-add {
+
+.modal-content-event {
   display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  align-self: stretch;
+}
+
+.modal-content-event__button-success {
+  display: flex;
+  padding: 13px 79px;
+  justify-content: center;
+  align-self: center;
+  gap: 10px;
+  flex: 1 0 0;
   border: none;
-  padding: 10px 30px;
   border-radius: 16px;
-  cursor: pointer;
-  background: linear-gradient(90deg, #D9D9D9 0%, #DFDFDF 100%);
-}
-
-.modal-content-event__icon-plus {
-  fill: white;
-}
-
-.modal-content-event__button-add:hover{
   background: linear-gradient(90deg, #2DD4BF 0%, #5EEAD4 100%);
+
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+
+  cursor: pointer;
 }
 
+.modal-content-event__button-success:hover {
+  background: linear-gradient(90deg, #14b8a6 0%, #2DD4BF 100%);
+}
+
+.modal-content-event__button-cancel {
+  display: flex;
+  padding: 13px 79px;
+  justify-content: center;
+  align-self: center;
+  gap: 10px;
+  flex: 1 0 0;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #D9D9D9 0%, #DFDFDF 100%);
+
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.modal-content-event__button-cancel:hover {
+  background: linear-gradient(90deg, #a3a3a3 0%, #d4d4d4 100%);
+}
 </style>

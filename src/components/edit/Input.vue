@@ -6,7 +6,7 @@
         </span>
     </div>
 
-    <input type="text" placeholder="Поместить сюда point.title" class="container-edit-change-title__input">
+    <input type="text" placeholder="Введите название..." class="container-edit-change-title__input" v-model='inputValue'>
   </div>
 </template>
 
@@ -15,6 +15,14 @@ export default {
   props: {
     titleInput: {
       type: Object
+    },
+    note: {
+      type: Object
+    }
+  },
+  data(){
+    return {
+      inputValue: this.titleInput.id === 1 ? this.note.title : ''
     }
   }
 }

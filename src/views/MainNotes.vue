@@ -4,7 +4,7 @@
   <div class="task-area">
 
     <Task v-for="note in notes" :key="note.id" :note="note" @deleteNote="deleteNote"/>
-    <AddNewTask :notes="notes" @addNote="createNewNote" :titleButton="titleButton"/>
+    <AddNewTask :notes="notes" @addNote="createNewNote" :input="input"/>
 
   </div>
 
@@ -25,17 +25,11 @@ export default {
     notes: {
       type: Array
     },
-    deleteNote: {
-      type: Function
-    },
     addNewNote: {
       type: Function
     },
-    titleButton: {
-      type: Array
-    },
-    saveDataToLocalStorage: {
-      type: Function
+    input: {
+      type: Object
     }
   },
   methods: {
@@ -50,8 +44,11 @@ export default {
     },
     createNewNote() {
       this.$emit("addNote");
+    },
+    saveDataToLocalStorage() {
+      localStorage.setItem('notes', JSON.stringify(this.notes));
     }
-  }
+  },
 }
 </script>
 

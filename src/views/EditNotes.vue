@@ -1,8 +1,7 @@
 <template>
   <Crumb :title-crumb="titleCrumb" :crumbId="3"/>
   <div class="edit-area">
-    <ContainerEdit :notes="notes" :titleButton="titleButton"/>
-
+    <ContainerEdit :notes="getNoteById()" @deleteNoteInEdit="deleteNoteInEdit"/>
   </div>
 </template>
 
@@ -17,16 +16,34 @@ export default {
       type: Array
     },
     notes: {
-      type: Array
-    },
-    deleteNote: {
-      type: Function
+      type: Object
     },
     addNewNote: {
       type: Function
     },
-    titleButton: {
-      type: Array
+    noteId: {
+      type: String,
+      required: true
+    }
+  },
+
+  methods: {
+    getNoteById() {
+      const id = +this.$route.params.noteId;
+      return this.notes.find((note) => note.id === id);
+    },
+    deleteNoteInEdit(currId) {
+      const index = this.notes.findIndex(note => note.id === currId);
+      console.log('ID & index -> ', currId, ' ', index);
+       this.notes.splice(index, 1);
+
+      this.saveLocalStorage();
+
+      this.$router.push('/');
+
+    },
+    saveLocalStorage() {
+      localStorage.setItem('notes', JSON.stringify(this.notes));
     }
   }
 }

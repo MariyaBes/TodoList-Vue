@@ -6,7 +6,7 @@
         <IconReturn class="container-edit-header__title-icon" alt="Повторить изменения"/>
       </div>
 
-      <div class="container-edit-header__delete">
+      <div class="container-edit-header__delete" @click="openModalDelete">
         <IconDelete class="container-edit-header__delete-icon"/>
         <span class="container-edit-header__delete-title">Удалить заметку</span>
       </div>
@@ -14,7 +14,7 @@
 
     <span class="container-edit__line"></span>
 
-    <Input :titleInput="titleInput[0]" />
+    <Input :titleInput="titleInput[0]" :note="notes"/>
 
     <span class="container-edit__line"></span>
 
@@ -30,11 +30,26 @@
       </div>
     </div>
 
+    <span class="container-edit__line"></span>
+
     <div class="container-edit-add-new">
-      <Input :titleInput="titleInput[1]" />
+      <Input :titleInput="titleInput[1]" :note="notes"/>
+      <div class="container-edit-add-new__button">
+        <ButtonAdd @addTask="addTask"/>
+      </div>
     </div>
 
-    <Button :titleButton="titleButton[1]"/>
+    <div class="container-edit-event">
+      <button class="container-edit-event__button-success">Сохранить</button>
+      <button
+          @click="$router.push('/')"
+          class="container-edit-event__button-cancel"
+      >Отмена</button>
+    </div>
+
+    <div>
+      <ModalDeleteTask v-model:show="isVisible" @deleteNote="deleteNoteInEdit"/>
+    </div>
   </div>
 </template>
 
@@ -44,24 +59,32 @@ import IconDelete from "@/components/icons/IconDelete.vue";
 import IconReturn from "@/components/icons/IconReturn.vue";
 import Checkbox from "@/components/general/Checkbox.vue";
 import Input from "@/components/edit/Input.vue";
-import Button from "@/components/general/Button.vue";
+import ButtonAdd from "@/components/general/ButtonAdd.vue";
+import ModalDeleteTask from "@/components/main/modal/ModalDeleteTask.vue";
 
 export default {
-  components: {Button, Input, Checkbox, IconReturn, IconDelete},
+  components: {ModalDeleteTask, ButtonAdd, Input, Checkbox, IconReturn, IconDelete},
   props: {
     notes: {
       type: Object
     },
-    titleButton: {
-      type: Array
-    }
   },
   data() {
     return {
       titleInput: [
         {id: 1, title: 'Заголовок'},
-        {id: 2, title: 'Добавить новую задачу:'},
-      ]
+        {id: 2, title: 'Добавить новую задачу:'}
+      ],
+      isVisible: false,
+    }
+  },
+  methods: {
+    openModalDelete() {
+      this.isVisible = true;
+    },
+    deleteNoteInEdit() {
+      this.$emit('deleteNoteInEdit', this.notes.id);
+      this.isVisible = false;
     }
   }
 }
@@ -146,6 +169,93 @@ export default {
 
 .container-edit-add-new {
   width: 100%;
+  display: flex;
+  gap: 15px;
 }
+
+.container-edit-add-new__button {
+  display: flex;
+  padding-top: 29px;
+}
+
+.container-edit-event {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  align-self: stretch;
+}
+
+.container-edit-event__button-success {
+  display: flex;
+  padding: 13px 79px;
+  justify-content: center;
+  align-self: center;
+  gap: 10px;
+  flex: 1 0 0;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #2DD4BF 0%, #5EEAD4 100%);
+
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.container-edit-event__button-success:hover {
+  background: linear-gradient(90deg, #14b8a6 0%, #2DD4BF 100%);
+}
+
+.container-edit-event__button-cancel {
+  display: flex;
+  padding: 13px 79px;
+  justify-content: center;
+  align-self: center;
+  gap: 10px;
+  flex: 1 0 0;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #D9D9D9 0%, #DFDFDF 100%);
+
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.container-edit-event__button-cancel:hover {
+  background: linear-gradient(90deg, #a3a3a3 0%, #d4d4d4 100%);
+}
+
+.container-edit-content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.container-edit-content__title {
+  width: 100%;
+}
+
+.container-edit-content__title-text {
+  color: #333333;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.9px;
+}
+
+.container-edit-content__list {
+  display: flex;
+  width: 100%;
+  padding: 0 28px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
 
 </style>

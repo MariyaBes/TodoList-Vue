@@ -10,8 +10,6 @@
       :titleCrumb="titleCrumb"
       :notes="notes"
       :addNewNote="addNewNote"
-      :titleButton="titleButton"
-      :saveDataToLocalStorage="saveDataToLocalStorage"
   />
 
 </template>
@@ -32,11 +30,6 @@ export default defineComponent({
         { id: 3, title: "Редактирование" }
       ],
       notes: [],
-      titleButton: [
-        {id: 1, title: 'Добавить'},
-        {id: 2, title: 'Сохранить'},
-        {id: 3, title: 'Изменить'},
-      ]
     }
   },
   methods: {

@@ -1,8 +1,7 @@
 <template>
   <div class="task-content-container">
-    <div class="task-content-container__ul">
       <ul class="task-content-points-list">
-        <li v-for="(point, pointId) in items.points" :key="pointId" class="task-content-points-list__item">
+        <li v-for="(point, pointId) in items?.points" :key="pointId" class="task-content-points-list__item">
           <input type="checkbox" :id="'id-' + pointId" class="points-list__checkbox">
           <label :for="'id-' + pointId" class="points-list__label">
             <span class="cbx">
@@ -14,7 +13,6 @@
           </label>
         </li>
       </ul>
-    </div>
   </div>
 </template>
 
@@ -27,8 +25,14 @@ export default {
 </script>
 
 <style scoped>
+.task-content-container{
+  display: flex;
+  width: 100%;
+}
+
 .task-content-points-list {
   list-style-type: none;
+  width: 100%;
   padding-left: 0;
 }
 
@@ -38,6 +42,7 @@ export default {
 
 .points-list__label {
   display: flex;
+  width: 100%;
   align-items: center;
   cursor: default;
   margin-bottom: 2px;
