@@ -9,8 +9,9 @@
   <RouterView
       :titleCrumb="titleCrumb"
       :notes="notes"
-      :deleteNote="deleteNote"
       :addNewNote="addNewNote"
+      :titleButton="titleButton"
+      :saveDataToLocalStorage="saveDataToLocalStorage"
   />
 
 </template>
@@ -26,10 +27,16 @@ export default defineComponent({
   data() {
     return {
       titleCrumb: [
-        { id: 1, title: "Ваш список задач" },
-        { id: 2, title: "Выполненные задачи" }
+        { id: 1, title: "Ваш список задач"  },
+        { id: 2, title: "Выполненные задачи" },
+        { id: 3, title: "Редактирование" }
       ],
       notes: [],
+      titleButton: [
+        {id: 1, title: 'Добавить'},
+        {id: 2, title: 'Сохранить'},
+        {id: 3, title: 'Изменить'},
+      ]
     }
   },
   methods: {
@@ -45,15 +52,6 @@ export default defineComponent({
       } catch (error) {
         console.error('Ошибка: ', error);
       }
-    },
-    deleteNote(noteId) {
-      console.log('deleteNote', noteId);
-
-      const index = this.notes.findIndex(note => note.id === noteId);
-      console.log('index', index);
-
-      this.notes.splice(index, 1);
-      this.saveDataToLocalStorage();
     }
   },
   mounted() {

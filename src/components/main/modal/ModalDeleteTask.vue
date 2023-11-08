@@ -1,5 +1,9 @@
 <template>
-  <div v-if="show" class="modal-container-back-screen" @click.stop="isVisible">
+  <div
+      v-if="show"
+      class="modal-container-back-screen"
+      @click.stop="isVisible"
+  >
     <div @click.stop class="modal-container">
       <div class="modal-container-header">
         <h1 class="modal-container-header__title">
@@ -8,7 +12,8 @@
         <h1 class="modal-container-header__warning">Вы действительно хотите удалить данную заметку? </h1>
       </div>
       <div class="modal-content-event">
-        <button @click="deleteNote" class="modal-content-event__button-danger">Удалить</button>
+        <button @click="deleteNote"
+                class="modal-content-event__button-danger">Удалить</button>
         <button @click="isVisible" class="modal-content-event__button-cancel">Отмена</button>
       </div>
     </div>
@@ -22,6 +27,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    notes: {
+      type: Object
+    }
   },
   methods: {
     isVisible() {

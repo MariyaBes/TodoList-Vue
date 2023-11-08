@@ -5,7 +5,12 @@
       <IconPlusNewTask />
     </div>
     <div>
-      <ModalCreateTask v-model:show="isVisible" @addNote="addNewNote" :notes="notes"/>
+      <ModalCreateTask
+          v-model:show="isVisible"
+          @addNote="addNewNote"
+          :notes="notes"
+          :titleButton="titleButton[0]"
+      />
     </div>
   </form>
 </template>
@@ -13,7 +18,7 @@
 <script>
 import IconPlusNewTask from "@/components/icons/IconPlusNewTask.vue";
 import {defineComponent} from "vue";
-import ModalCreateTask from "@/components/main/ModalCreateTask.vue";
+import ModalCreateTask from "@/components/main/modal/ModalCreateTask.vue";
 
 export default defineComponent({
   components: {IconPlusNewTask, ModalCreateTask},
@@ -21,6 +26,9 @@ export default defineComponent({
     notes: {
       type: Array,
     },
+    titleButton: {
+      type: Array
+    }
   },
   data() {
     return {

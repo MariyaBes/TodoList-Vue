@@ -10,19 +10,18 @@
       <Checkbox  :items="note" />
 
     </div>
-    <button class="task-button">
-        <span class="task-button-edit" @click="$router.push('/edit-notes')">Редактировать</span>
+    <button class="task-button" @click="$router.push('/edit-notes')">
+        <span class="task-button-edit">Редактировать</span>
     </button>
   </div>
 </template>
 
 <script>
-import IconDotsVertical from "@/components/icons/IconDotsVertical.vue";
 import Checkbox from "@/components/general/Checkbox.vue";
 import SelectDelete from "@/components/main/SelectDelete.vue";
 
 export default {
-  components: {SelectDelete, Checkbox, IconDotsVertical},
+  components: {SelectDelete, Checkbox},
   props: {
     note: {
       type: Object,

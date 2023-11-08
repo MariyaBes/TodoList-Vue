@@ -1,10 +1,10 @@
 <template>
-  <Crumb :title-crumb="titleCrumb" :crumbId="1"/>
+  <Crumb :title-crumb="titleCrumb" :crumbId="1" />
 
   <div class="task-area">
 
     <Task v-for="note in notes" :key="note.id" :note="note" @deleteNote="deleteNote"/>
-    <AddNewTask :notes="notes" @addNote="addNewNote"/>
+    <AddNewTask :notes="notes" @addNote="createNewNote" :titleButton="titleButton"/>
 
   </div>
 
@@ -13,8 +13,8 @@
 
 <script>
 import Crumb from "@/components/general/Crumb.vue";
-import Task from "@/components/main/Task.vue";
-import AddNewTask from "@/components/main/AddNewTask.vue";
+import Task from "@/components/main/task/Task.vue";
+import AddNewTask from "@/components/main/task/AddNewTask.vue";
 
 export default {
   components: {AddNewTask, Task, Crumb},
@@ -30,14 +30,26 @@ export default {
     },
     addNewNote: {
       type: Function
+    },
+    titleButton: {
+      type: Array
+    },
+    saveDataToLocalStorage: {
+      type: Function
     }
   },
   methods: {
-    deleteNote() {
-      this.$emit('deleteNote', this.notes.id);
+    deleteNote(noteId) {
+      console.log('deleteNote', noteId);
+
+      const index = this.notes.findIndex(note => note.id === noteId);
+      console.log('index', index);
+
+      this.notes.splice(index, 1);
+      this.saveDataToLocalStorage();
     },
-    addNewNote(newNote) {
-      this.$emit("addNote", newNote);
+    createNewNote() {
+      this.$emit("addNote");
     }
   }
 }
