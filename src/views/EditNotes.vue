@@ -1,7 +1,7 @@
 <template>
-  <Crumb :title-crumb="titleCrumb" :crumbId="3"/>
+  <Crumb :title-crumb="titleCrumb" :crumbId="2"/>
   <div class="edit-area">
-    <ContainerEdit :notes="getNoteById()" @deleteNoteInEdit="deleteNoteInEdit"/>
+    <ContainerEdit :notes="getNoteById()" @deleteNoteInEdit="deleteNoteInEdit" :noteId="noteId"/>
   </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
 
   methods: {
     getNoteById() {
-      const id = +this.$route.params.noteId;
+      const id = +this.noteId;
       return this.notes.find((note) => note.id === id);
     },
     deleteNoteInEdit(currId) {
@@ -44,7 +44,7 @@ export default {
     },
     saveLocalStorage() {
       localStorage.setItem('notes', JSON.stringify(this.notes));
-    }
+    },
   }
 }
 </script>

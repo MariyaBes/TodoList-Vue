@@ -26,16 +26,21 @@
       </div>
 
       <div class="container-edit-content__list">
-        <Checkbox :items="notes"/>
+        <Checkbox :notes="notes"/>
       </div>
     </div>
 
     <span class="container-edit__line"></span>
 
     <div class="container-edit-add-new">
-      <Input :titleInput="titleInput[1]" :note="notes"/>
+      <Input
+          :titleInput="titleInput[1]"
+          :note="notes"
+          :currTextPoint="currPoint.text"
+          @input-value="getInputValue"
+      />
       <div class="container-edit-add-new__button">
-        <ButtonAdd @addTask="addTask"/>
+        <ButtonAdd @addPoints="addPoints"/>
       </div>
     </div>
 
@@ -57,7 +62,7 @@
 
 import IconDelete from "@/components/icons/IconDelete.vue";
 import IconReturn from "@/components/icons/IconReturn.vue";
-import Checkbox from "@/components/general/Checkbox.vue";
+import Checkbox from "@/components/edit/Checkbox.vue";
 import Input from "@/components/edit/Input.vue";
 import ButtonAdd from "@/components/general/ButtonAdd.vue";
 import ModalDeleteTask from "@/components/main/modal/ModalDeleteTask.vue";
@@ -68,14 +73,18 @@ export default {
     notes: {
       type: Object
     },
+    noteId: {
+      type: String
+    }
   },
   data() {
     return {
       titleInput: [
         {id: 1, title: 'Заголовок'},
-        {id: 2, title: 'Добавить новую задачу:'}
+        {id: 2, title: 'Добавить новую задачу:'},
       ],
       isVisible: false,
+      currPoint: this.notes.points,
     }
   },
   methods: {
@@ -85,6 +94,25 @@ export default {
     deleteNoteInEdit() {
       this.$emit('deleteNoteInEdit', this.notes.id);
       this.isVisible = false;
+    },
+    // saveEdits() {
+    //
+    // }
+    addPoints() {
+      if (this.currPoint.text) {
+        this.currPoint.pointId = Date.now();
+        this.currPoint.isChecked = false;
+        this.notes.points.push(
+            {pointId: this.currPoint.pointId, text: this.currPoint.text, isChecked: this.currPoint.isChecked }
+        );
+
+        console.log(`Пункт в заметке под id - ${this.currPoint.pointId} и она выполнена - ${this.currPoint.isChecked}`);
+      }
+      this.currPoint.text = '';
+      console.log(this.currPoint.text);
+    },
+    getInputValue(value) {
+      this.currPoint.text = value;
     }
   }
 }

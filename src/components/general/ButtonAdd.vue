@@ -1,5 +1,7 @@
 <template>
-  <button @click="addTask" class="modal-content-event__button-add"> <IconAdd class="modal-content-event__icon-plus"/></button>
+  <button @click="addPoints" class="modal-content-event__button-add">
+    <IconAdd class="modal-content-event__icon-plus"/>
+  </button>
 </template>
 
 <script>
@@ -8,8 +10,8 @@ import IconAdd from "@/components/icons/IconAdd.vue";
 export default {
   components: {IconAdd},
   methods: {
-    addTask() {
-      this.$emit('addTask')
+    addPoints() {
+      this.$emit('addPoints')
     }
   }
 }

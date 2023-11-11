@@ -1,25 +1,28 @@
 <template>
   <div class="task-content-container">
-      <ul class="task-content-points-list">
-        <li v-for="(point, pointId) in items?.points" :key="pointId" class="task-content-points-list__item">
-          <input type="checkbox" :id="'id-' + pointId" class="points-list__checkbox">
-          <label :for="'id-' + pointId" class="points-list__label">
-            <span class="cbx">
-              <svg width="14px" height="12px" viewBox="0 0 14 12">
-                <polyline points="1 7.6 5 11 13 1"></polyline>
-              </svg>
-            </span>
-            <span class="points-list__label-text">{{ point.text }}</span>
-          </label>
-        </li>
-      </ul>
+    <ul class="task-content-points-list">
+      <li v-for="(point, pointId) in items.points" :key="pointId" class="task-content-points-list__item">
+        <input type="checkbox" id="checkbox" :checked="point.completed" class="points-list__checkbox">
+        <label :for="'checkbox-' + pointId" class="points-list__label">
+          <span class="cbx">
+            <svg width="14px" height="12px" viewBox="0 0 14 12">
+              <polyline points="1 7.6 5 11 13 1"></polyline>
+            </svg>
+          </span>
+          <span class="points-list__label-text">{{ point.text }}</span>
+        </label>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    items: Object,
+    items: {
+      type: Object,
+      required: true
+    }
   }
 }
 </script>

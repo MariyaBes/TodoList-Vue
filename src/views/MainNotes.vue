@@ -7,8 +7,6 @@
     <AddNewTask :notes="notes" @addNote="createNewNote" :input="input"/>
 
   </div>
-
-  <Crumb :title-crumb="titleCrumb" :crumbId="2"/>
 </template>
 
 <script>

@@ -6,7 +6,13 @@
         </span>
     </div>
 
-    <input type="text" placeholder="Введите название..." class="container-edit-change-title__input" v-model='inputValue'>
+    <input
+        type="text"
+        placeholder="Введите название..."
+        class="container-edit-change-title__input"
+        v-model='inputValue'
+        @input="value"
+    >
   </div>
 </template>
 
@@ -18,11 +24,21 @@ export default {
     },
     note: {
       type: Object
+    },
+    currTextPoint: {
+      type: String
     }
   },
   data(){
     return {
-      inputValue: this.titleInput.id === 1 ? this.note.title : ''
+      inputValue: this.titleInput.id === 1 ?
+          this.note.title :
+          this.titleInput.id === 2 ? this.currTextPoint : ''
+    }
+  },
+  methods: {
+    value() {
+      this.$emit('input-value', this.inputValue);
     }
   }
 }

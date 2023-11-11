@@ -26,7 +26,7 @@
           <div class="modal-content-add-new-element">
             <input v-model="currentPoint.text" type="text" class="modal-content-add-new-element__input" placeholder="Добавить элемент...">
 
-            <ButtonAdd @addTask="addTask"/>
+            <ButtonAdd @addPoints="addPoints"/>
 
           </div>
 
@@ -53,13 +53,13 @@ export default {
       default: false,
     },
     notes: {
-      type: Array,
+      type: Object,
     }
   },
   data() {
     return {
       currentNote: { id: '', title: '', points: [] }, // Здесь хранится текущая заметка
-      currentPoint: { pointId: '', text: '' }, // Здесь хранится текущий элемент
+      currentPoint: { pointId: '', text: '', isChecked: false }, // Здесь хранится текущий элемент
       isListVisible: false, // Переменная для управления видимостью списка
     };
   },
@@ -72,19 +72,20 @@ export default {
       this.$emit('update:show', false);
       console.log("ModalCreateTask isVisible", this.show);
     },
-    addTask() {
+    addPoints() {
       if (this.currentPoint.text) {
         this.currentPoint.pointId = this.generateUniqueId();
+        this.currentPoint.isChecked = false;
         // Добавляем текущую задачу к текущей заметке
-        this.currentNote.points.push({ text: this.currentPoint.text });
+        this.currentNote.points.push({ pointId: this.currentPoint.pointId, text: this.currentPoint.text, isChecked:this.currentPoint.isChecked });
         this.currentPoint.text = ''; // Очищаем текст для новой задачи
         this.isListVisible = true;
 
-        console.log(`Пункт в заметке под id - ${this.currentPoint.pointId}`);
+        console.log(`Пункт в заметке под id - ${this.currentPoint.pointId} и она выполнена - ${this.currentPoint.isChecked}`);
       }
     },
     addNewNote() {
-      if (this.currentNote.title && this.currentPoint.pointId) {
+      if (this.currentNote.title && this.currentNote.points.length > 0) {
         this.currentNote.id = this.generateUniqueId();
         this.notes.push({ ...this.currentNote });
         this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и текущего элемента

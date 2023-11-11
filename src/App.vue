@@ -26,8 +26,7 @@ export default defineComponent({
     return {
       titleCrumb: [
         { id: 1, title: "Ваш список задач"  },
-        { id: 2, title: "Выполненные задачи" },
-        { id: 3, title: "Редактирование" }
+        { id: 2, title: "Редактирование" }
       ],
       notes: [],
     }

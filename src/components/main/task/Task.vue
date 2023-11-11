@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="task-content">
-      <Checkbox  :items="note" />
+      <ListPoints  :items="note" />
 
     </div>
     <button class="task-button" @click="$router.push({ name: 'edit', params: {noteId: note.id}})">
@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import Checkbox from "@/components/general/Checkbox.vue";
 import SelectDelete from "@/components/main/SelectDelete.vue";
+import ListPoints from "@/components/general/ListPoints.vue";
 
 export default {
-  components: {SelectDelete, Checkbox},
+  components: {ListPoints, SelectDelete},
   props: {
     note: {
       type: Object,
