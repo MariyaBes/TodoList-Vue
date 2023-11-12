@@ -6,9 +6,12 @@
         <SelectDelete :notes="note" @deleteNote="deleteNote" />
       </div>
     </div>
-    <div class="task-content">
+    <div class="task-content" v-if="note.points && note.points.length > 0">
       <ListPoints  :items="note" />
+    </div>
 
+    <div class="task-content" v-else>
+      <p class="task-content__text">Список пуст, добавьте новые задачи.</p>
     </div>
     <button class="task-button" @click="$router.push({ name: 'edit', params: {noteId: note.id}})">
         <span class="task-button-edit">Редактировать</span>
@@ -99,6 +102,16 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   gap: 10px;
+}
+
+.task-content__text {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  align-items: center;
+  justify-content: center;
 }
 
 .task-button {

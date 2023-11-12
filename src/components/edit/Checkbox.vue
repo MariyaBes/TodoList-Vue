@@ -12,7 +12,7 @@
                 :id="'id-' + pointIndex"
                 class="points-list__checkbox"
                 v-model="point.isChecked"
-                @click="changeCheckbox"
+                @click="changeCheckbox(point)"
             >
             <label :for="'id-' + pointIndex" class="points-list__label" @click="console.log(pointIndex, point.pointId)">
               <span class="points-list__label-text">{{ point.text }}</span>
@@ -20,17 +20,17 @@
 
             <div class="task-content-container__absolute">
               <ModalEditTask
-                  v-if="editText[pointIndex] !== undefined || editText !== undefined"
+                  v-if="isVisible && editText !== undefined"
                   v-model:show="isVisible"
                   @updateText="updateText"
-                  :pointIndex="pointIndex"
-                  :editText="editText[pointIndex]"
+                  :pointIndex="modalPointIndex"
+                  :editText="editText"
               />
             </div>
           </div>
 
           <div class="task-content-points-list__item-event" >
-            <IconEdit class="points-list__edit-point" @click="() => openModal(pointIndex)"/>
+            <IconEdit class="points-list__edit-point" @click="() => {openModal(pointIndex); console.log('openModal[pointIndex] = ', pointIndex)}"/>
             <span @click="deletePoint(pointIndex)" class="points-list__delete-point">X</span>
           </div>
         </li>
@@ -48,7 +48,8 @@ export default {
     return {
       isChecked: false,
       isVisible: false,
-      editText: {},
+      editText: '',
+      modalPointIndex: null,
     }
   },
   props: {
@@ -60,7 +61,8 @@ export default {
     },
     openModal(pointIndex) {
       this.isVisible = true;
-      this.editText[pointIndex] = this.notes.points[pointIndex].text;
+      this.editText = this.notes.points[pointIndex].text;
+      this.modalPointIndex = pointIndex; // устанавливаем pointIndex
       console.log('pointIndex = ', pointIndex, '\n', 'editText = ', this.editText, '\n', 'editText.pointIndex = ', this.editText[pointIndex])
     },
     updateText(newText, pointIndex) {
@@ -70,6 +72,9 @@ export default {
     deletePoint(point) {
       this.notes.points.splice(point, 1);
       console.log(point );
+    },
+    getPointIndex() {
+      return this.pointIndex;
     },
   }
 }

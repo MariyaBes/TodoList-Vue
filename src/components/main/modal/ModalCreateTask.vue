@@ -81,7 +81,7 @@ export default {
       }
     },
     addNewNote() {
-      if (this.currentNote.title && this.currentNote.points.length > 0) {
+      if (this.currentNote.title ) {
         this.currentNote.id = Date.now();
         this.notes.push(this.currentNote);
         console.log(typeof this.notes, this.notes);

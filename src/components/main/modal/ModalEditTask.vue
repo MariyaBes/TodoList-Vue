@@ -8,7 +8,7 @@
           <span class="modal-header__line"></span>
         </div>
 
-        <div class="container-edit" @click="console.log('this.localEditText -> ', localEditText, '\n', this.pointIndex, '\n', 'EditText -> ', this.editText)">
+        <div class="container-edit" @click="console.log('this.localEditText -> ', localEditText, '\n', 'this.pointIndex ->', this.pointIndex, '\n', 'EditText -> ', this.editText)">
           <div class="container-edit-change-title">
             <div class="container-edit-change-title__title">
               <span class="container-edit-change-title__title-text">
@@ -17,11 +17,11 @@
             </div>
 
             <input
-                type="text" placeholder="Изменить название..."
+                type="text"
+                placeholder="Изменить название..."
                 class="container-edit-change-title__input"
                 v-model="localEditText"
                 @click="console.log('Modal localEditText -> ', pointIndex)"
-                :key="pointIndex"
             >
           </div>
         </div>
@@ -55,7 +55,7 @@ export default {
       type: Number
     },
     editText: {
-      type: Object,
+      type: String,
     },
   },
   methods: {
@@ -71,8 +71,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .modal-container-back-screen {
   display: flex;
   flex-shrink: 0;
