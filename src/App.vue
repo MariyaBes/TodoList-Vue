@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" @click="console.log('IT`S APP.VUE ---> ', typeof this.notes)">
     <div class="header-title">
       <p class="header-text">Заметки</p>
       <IconCheck class="header-icon"/>
@@ -7,7 +7,6 @@
   </header>
 
   <RouterView
-      :titleCrumb="titleCrumb"
       :notes="notes"
       :addNewNote="addNewNote"
   />
@@ -24,16 +23,12 @@ export default defineComponent({
   components: {EditNotes, MainNotes, IconCheck},
   data() {
     return {
-      titleCrumb: [
-        { id: 1, title: "Ваш список задач"  },
-        { id: 2, title: "Редактирование" }
-      ],
       notes: [],
     }
   },
   methods: {
     addNewNote() {
-      const newNote = { };
+      const newNote = {};
       this.notes.push(newNote);
       this.saveDataToLocalStorage();
       console.log(newNote)

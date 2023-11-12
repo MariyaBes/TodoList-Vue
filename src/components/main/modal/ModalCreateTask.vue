@@ -53,7 +53,7 @@ export default {
       default: false,
     },
     notes: {
-      type: Object,
+      type: Array,
     }
   },
   data() {
@@ -64,17 +64,13 @@ export default {
     };
   },
   methods: {
-    generateUniqueId() {
-      // return +Math.floor(Math.random() * (100 - 1 + 1) + 1);
-      return Date.now();
-    },
     closeModal() {
       this.$emit('update:show', false);
       console.log("ModalCreateTask isVisible", this.show);
     },
     addPoints() {
       if (this.currentPoint.text) {
-        this.currentPoint.pointId = this.generateUniqueId();
+        this.currentPoint.pointId = Date.now();
         this.currentPoint.isChecked = false;
         // Добавляем текущую задачу к текущей заметке
         this.currentNote.points.push({ pointId: this.currentPoint.pointId, text: this.currentPoint.text, isChecked:this.currentPoint.isChecked });
@@ -86,8 +82,9 @@ export default {
     },
     addNewNote() {
       if (this.currentNote.title && this.currentNote.points.length > 0) {
-        this.currentNote.id = this.generateUniqueId();
-        this.notes.push({ ...this.currentNote });
+        this.currentNote.id = Date.now();
+        this.notes.push(this.currentNote);
+        console.log(typeof this.notes, this.notes);
         this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и текущего элемента
         this.currentPoint.text = '';
         this.isListVisible = false; // Скрываем список после добавления заметки

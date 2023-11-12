@@ -1,5 +1,5 @@
 <template>
-  <div class="container-edit">
+  <div class="container-edit" >
     <div class="container-edit-header">
       <div class="container-edit-header__title">
         <span class="container-edit-header__title-name">Изменить</span>
@@ -14,10 +14,26 @@
 
     <span class="container-edit__line"></span>
 
-    <Input :titleInput="titleInput[0]" :note="notes"/>
+    <!--    ИНПУТ ИЗМЕНЕНИЯ ЗАГОЛОВКА -->
+    <div class="container-edit-change-title">
+      <div class="container-edit-change-title__title">
+        <span class="container-edit-change-title__title-text">
+          Заголовок
+        </span>
+      </div>
+
+      <input
+          type="text"
+          placeholder="Введите новое название..."
+          class="container-edit-change-title__input"
+          v-model='currNotes'
+          @input="isChangeTitle ? null : changeTitle"
+      >
+    </div>
 
     <span class="container-edit__line"></span>
 
+    <!--    СПИСОК ПУНКТОВ ЗАМЕТКИ -->
     <div class="container-edit-content">
       <div class="container-edit-content__title">
         <span class="container-edit-content__title-text">
@@ -32,26 +48,43 @@
 
     <span class="container-edit__line"></span>
 
+    <!--    ИНПУТ ДОБАВЛЕНИЯ -->
     <div class="container-edit-add-new">
-      <Input
-          :titleInput="titleInput[1]"
-          :note="notes"
-          :currTextPoint="currPoint.text"
-          @input-value="getInputValue"
-      />
+      <div class="container-edit-change-title">
+        <div class="container-edit-change-title__title">
+        <span class="container-edit-change-title__title-text">
+          Добавить новую задачу:
+        </span>
+        </div>
+
+        <input
+            type="text"
+            placeholder="Введите название..."
+            class="container-edit-change-title__input"
+            v-model='currPoint.text'
+        >
+      </div>
       <div class="container-edit-add-new__button">
         <ButtonAdd @addPoints="addPoints"/>
       </div>
     </div>
 
+<!--    КНОПКИ "СОХРАНИТЬ" И "ИЗМЕНИТЬ"-->
     <div class="container-edit-event">
-      <button class="container-edit-event__button-success">Сохранить</button>
       <button
-          @click="$router.push('/')"
-          class="container-edit-event__button-cancel"
-      >Отмена</button>
+          @click="saveEdits"
+          class="container-edit-event__button-success">
+        Сохранить
+      </button>
+
+      <button
+          @click="cancelEdits"
+          class="container-edit-event__button-cancel">
+        Отмена
+      </button>
     </div>
 
+    <!--    МОДАЛЬНОЕ ОКНО -->
     <div>
       <ModalDeleteTask v-model:show="isVisible" @deleteNote="deleteNoteInEdit"/>
     </div>
@@ -63,12 +96,11 @@
 import IconDelete from "@/components/icons/IconDelete.vue";
 import IconReturn from "@/components/icons/IconReturn.vue";
 import Checkbox from "@/components/edit/Checkbox.vue";
-import Input from "@/components/edit/Input.vue";
 import ButtonAdd from "@/components/general/ButtonAdd.vue";
 import ModalDeleteTask from "@/components/main/modal/ModalDeleteTask.vue";
 
 export default {
-  components: {ModalDeleteTask, ButtonAdd, Input, Checkbox, IconReturn, IconDelete},
+  components: {ModalDeleteTask, ButtonAdd, Checkbox, IconReturn, IconDelete},
   props: {
     notes: {
       type: Object
@@ -79,12 +111,11 @@ export default {
   },
   data() {
     return {
-      titleInput: [
-        {id: 1, title: 'Заголовок'},
-        {id: 2, title: 'Добавить новую задачу:'},
-      ],
       isVisible: false,
-      currPoint: this.notes.points,
+      currPoint: { text: '' },
+      currNotes: this.notes.title,
+      originalNotes: JSON.parse(JSON.stringify(this.notes)),
+      isChangeTitle: false
     }
   },
   methods: {
@@ -95,9 +126,6 @@ export default {
       this.$emit('deleteNoteInEdit', this.notes.id);
       this.isVisible = false;
     },
-    // saveEdits() {
-    //
-    // }
     addPoints() {
       if (this.currPoint.text) {
         this.currPoint.pointId = Date.now();
@@ -105,16 +133,51 @@ export default {
         this.notes.points.push(
             {pointId: this.currPoint.pointId, text: this.currPoint.text, isChecked: this.currPoint.isChecked }
         );
-
+        this.currPoint.text = '';
         console.log(`Пункт в заметке под id - ${this.currPoint.pointId} и она выполнена - ${this.currPoint.isChecked}`);
       }
-      this.currPoint.text = '';
-      console.log(this.currPoint.text);
     },
-    getInputValue(value) {
-      this.currPoint.text = value;
-    }
-  }
+    changeTitle() {
+      this.isChangeTitle = true;
+      this.originalNotes.title = this.currNotes;
+      this.isChangeTitle = false;
+      console.log('currNotes -> ', this.currNotes, 'Notes -> ', this.originalNotes.title);
+    },
+    cancelEdits() {
+      Object.assign(this.notes, JSON.parse(JSON.stringify(this.originalNotes)));
+      this.$router.push('/');
+    },
+    saveEdits() {
+      const updatedNote = {
+        id: this.notes.id,
+        title: this.currNotes,
+        points: [...this.notes.points],
+      };
+      this.saveDataToLocalStorage(updatedNote);
+      this.$router.push('/');
+    },
+    saveDataToLocalStorage(updatedNote) {
+      try {
+        const savedNotes = localStorage.getItem('notes');
+        const notes = savedNotes ? JSON.parse(savedNotes) : [];
+
+        // Находим индекс заметки, которую мы хотим обновить
+        const index = notes.findIndex(note => note.id === updatedNote.id);
+
+        // Если заметка найдена, обновляем её, в противном случае добавляем новую
+        if (index !== -1) {
+          notes[index] = updatedNote;
+        } else {
+          notes.push(updatedNote);
+        }
+
+        localStorage.setItem('notes', JSON.stringify(notes));
+        this.notes.title = this.currNotes;
+      } catch (error) {
+        console.error('Ошибка: ', error);
+      }
+    },
+  },
 }
 </script>
 
@@ -285,5 +348,39 @@ export default {
   gap: 10px;
 }
 
+.container-edit-change-title {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 8px;
+  flex-direction: column;
+  flex: 1 0 0;
+}
 
+.container-edit-change-title__title {
+  align-items: center;
+}
+
+.container-edit-change-title__title-text {
+  color: #333333;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.9px;
+}
+
+.container-edit-change-title__input {
+  display: flex;
+  padding: 0 15px;
+  align-items: center;
+  align-self: stretch;
+  height: 48px;
+  border: 1px solid #DFDFDF;
+  background: white;
+  border-radius: 10px;
+  justify-content: center;
+
+  color: #333333;
+  font-size: 16px;
+  font-weight: 500;
+}
 </style>

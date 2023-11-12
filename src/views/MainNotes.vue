@@ -1,11 +1,8 @@
 <template>
-  <Crumb :title-crumb="titleCrumb" :crumbId="1" />
-
-  <div class="task-area">
-
+  <Crumb />
+  <div class="task-area" @click="console.log(notes)">
     <Task v-for="note in notes" :key="note.id" :note="note" @deleteNote="deleteNote"/>
     <AddNewTask :notes="notes" @addNote="createNewNote" :input="input"/>
-
   </div>
 </template>
 
@@ -17,11 +14,8 @@ import AddNewTask from "@/components/main/task/AddNewTask.vue";
 export default {
   components: {AddNewTask, Task, Crumb},
   props: {
-    titleCrumb: {
-      type: Array
-    },
     notes: {
-      type: Array
+      type: Object
     },
     addNewNote: {
       type: Function

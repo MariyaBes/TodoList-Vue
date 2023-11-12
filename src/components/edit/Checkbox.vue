@@ -20,10 +20,11 @@
 
             <div class="task-content-container__absolute">
               <ModalEditTask
+                  v-if="editText[pointIndex] !== undefined || editText !== undefined"
                   v-model:show="isVisible"
                   @updateText="updateText"
-                  :pointIndex="editText[pointIndex]"
-                  :editText="editText"
+                  :pointIndex="pointIndex"
+                  :editText="editText[pointIndex]"
               />
             </div>
           </div>
@@ -58,12 +59,11 @@ export default {
       point.isChecked = !point.isChecked;
     },
     openModal(pointIndex) {
-      console.log('pointIndex:', pointIndex);
       this.isVisible = true;
       this.editText[pointIndex] = this.notes.points[pointIndex].text;
       console.log('pointIndex = ', pointIndex, '\n', 'editText = ', this.editText, '\n', 'editText.pointIndex = ', this.editText[pointIndex])
     },
-    updateText(newText, pointIndex) {``
+    updateText(newText, pointIndex) {
       console.log(newText, pointIndex);
       this.notes.points[pointIndex].text = newText;
     },

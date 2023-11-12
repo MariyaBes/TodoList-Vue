@@ -38,9 +38,7 @@ export default {
        this.notes.splice(index, 1);
 
       this.saveLocalStorage();
-
       this.$router.push('/');
-
     },
     saveLocalStorage() {
       localStorage.setItem('notes', JSON.stringify(this.notes));
