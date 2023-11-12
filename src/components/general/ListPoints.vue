@@ -2,13 +2,20 @@
   <div class="task-content-container">
     <ul class="task-content-points-list">
       <li v-for="(point, pointId) in items.points" :key="pointId" class="task-content-points-list__item">
-        <input type="checkbox" id="checkbox" :checked="point.completed" class="points-list__checkbox">
         <label :for="'checkbox-' + pointId" class="points-list__label">
-          <span class="cbx">
-            <svg width="14px" height="12px" viewBox="0 0 14 12">
-              <polyline points="1 7.6 5 11 13 1"></polyline>
-            </svg>
-          </span>
+          <div v-if="point.isChecked === true">
+            <span class="cbx-true">
+              <IconDone />
+            </span>
+          </div>
+
+          <div v-if="point.isChecked === false">
+            <span class="cbx">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="6.75" stroke="#333333" stroke-width="1.5"/>
+              </svg>
+            </span>
+          </div>
           <span class="points-list__label-text">{{ point.text }}</span>
         </label>
       </li>
@@ -17,7 +24,10 @@
 </template>
 
 <script>
+import IconDone from "@/components/icons/IconDone.vue";
+
 export default {
+  components: {IconDone},
   props: {
     items: {
       type: Object,
@@ -55,12 +65,23 @@ export default {
   padding: 3px;
 }
 
-.task-content-container .cbx {
-  width: 15px;
-  height: 15px;
+.task-content-container .cbx-true {
+  display: flex;
+  width: 18px;
+  height: 18px;
   margin-right: 6px;
-  border: 1px solid #9098a9;
-  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-content-container .cbx {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  margin-left: 1px;
+  align-items: center;
+  justify-content: center;
 }
 
 .task-content-container .cbx svg {
