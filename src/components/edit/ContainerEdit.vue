@@ -129,7 +129,11 @@ export default {
       this.isVisible = true;
     },
     openCancelEdits() {
-      this.isCancel = true;
+      if (!this.equalsNotes(this.notes, this.originalNotes)) {
+        this.isCancel = true;
+      } else {
+        this.$router.push('/');
+      }
     },
     deleteNoteInEdit() {
       this.$emit('deleteNoteInEdit', this.notes.id);
@@ -153,8 +157,6 @@ export default {
       this.isChangeTitle = true;
       this.originalNotes.title = this.currNotes;
       this.isChangeTitle = false;
-
-      console.log('currNotes -> ', this.currNotes, 'Notes -> ', this.originalNotes.title);
     },
     cancelEdits() {
       Object.assign(this.notes, JSON.parse(JSON.stringify(this.originalNotes)));
@@ -175,10 +177,10 @@ export default {
         const savedNotes = localStorage.getItem('notes');
         const notes = savedNotes ? JSON.parse(savedNotes) : [];
 
-        // Находим индекс заметки, которую мы хотим обновить
+        // Находим индекс заметки, которую надо обновить
         const index = notes.findIndex(note => note.id === updatedNote.id);
 
-        // Если заметка найдена, обновляем её, в противном случае добавляем новую
+        // Если найдена - обновляем её, иначе добавляем новую
         if (index !== -1) {
           notes[index] = updatedNote;
         } else {
@@ -191,6 +193,12 @@ export default {
         console.error('Ошибка: ', error);
       }
     },
+    equalsNotes(notes, copyNotes) {
+      const key1 = JSON.stringify(notes);
+      const key2 = JSON.stringify(copyNotes);
+
+      return key1 === key2;
+    }
   }
 }
 </script>
