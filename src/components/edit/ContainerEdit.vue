@@ -1,3 +1,4 @@
+
 <template>
   <div class="container-edit" >
     <div class="container-edit-header">
@@ -78,7 +79,7 @@
       </button>
 
       <button
-          @click="cancelEdits"
+          @click="openCancelEdits"
           class="container-edit-event__button-cancel">
         Отмена
       </button>
@@ -88,19 +89,23 @@
     <div>
       <ModalDeleteTask v-model:show="isVisible" @deleteNote="deleteNoteInEdit"/>
     </div>
+
+    <div>
+      <ModalWarn v-model:show="isCancel" @cancelEdits="cancelEdits"/>
+    </div>
   </div>
 </template>
 
 <script>
-
 import IconDelete from "@/components/icons/IconDelete.vue";
 import IconReturn from "@/components/icons/IconReturn.vue";
 import Checkbox from "@/components/edit/Checkbox.vue";
 import ButtonAdd from "@/components/general/ButtonAdd.vue";
 import ModalDeleteTask from "@/components/main/modal/ModalDeleteTask.vue";
+import ModalWarn from "@/components/edit/modal/ModalWarn.vue";
 
 export default {
-  components: {ModalDeleteTask, ButtonAdd, Checkbox, IconReturn, IconDelete},
+  components: {ModalWarn, ModalDeleteTask, ButtonAdd, Checkbox, IconReturn, IconDelete},
   props: {
     notes: {
       type: Object
@@ -112,6 +117,7 @@ export default {
   data() {
     return {
       isVisible: false,
+      isCancel: false,
       currPoint: { text: '' },
       currNotes: this.notes.title,
       originalNotes: JSON.parse(JSON.stringify(this.notes)),
@@ -122,6 +128,9 @@ export default {
     openModalDelete() {
       this.isVisible = true;
     },
+    openCancelEdits() {
+      this.isCancel = true;
+    },
     deleteNoteInEdit() {
       this.$emit('deleteNoteInEdit', this.notes.id);
       this.isVisible = false;
@@ -130,10 +139,13 @@ export default {
       if (this.currPoint.text) {
         this.currPoint.pointId = Date.now();
         this.currPoint.isChecked = false;
+
         this.notes.points.push(
             {pointId: this.currPoint.pointId, text: this.currPoint.text, isChecked: this.currPoint.isChecked }
         );
+
         this.currPoint.text = '';
+
         console.log(`Пункт в заметке под id - ${this.currPoint.pointId} и она выполнена - ${this.currPoint.isChecked}`);
       }
     },
@@ -141,6 +153,7 @@ export default {
       this.isChangeTitle = true;
       this.originalNotes.title = this.currNotes;
       this.isChangeTitle = false;
+
       console.log('currNotes -> ', this.currNotes, 'Notes -> ', this.originalNotes.title);
     },
     cancelEdits() {
@@ -153,6 +166,7 @@ export default {
         title: this.currNotes,
         points: [...this.notes.points],
       };
+
       this.saveDataToLocalStorage(updatedNote);
       this.$router.push('/');
     },
@@ -177,7 +191,7 @@ export default {
         console.error('Ошибка: ', error);
       }
     },
-  },
+  }
 }
 </script>
 

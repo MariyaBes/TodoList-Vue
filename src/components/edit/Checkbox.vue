@@ -40,7 +40,7 @@
 
 <script>
 import IconEdit from "@/components/icons/IconEdit.vue";
-import ModalEditTask from "@/components/main/modal/ModalEditTask.vue";
+import ModalEditTask from "@/components/edit/modal/ModalEditTask.vue";
 
 export default {
   components: {ModalEditTask, IconEdit},
@@ -62,7 +62,7 @@ export default {
     openModal(pointIndex) {
       this.isVisible = true;
       this.editText = this.notes.points[pointIndex].text;
-      this.modalPointIndex = pointIndex; // устанавливаем pointIndex
+      this.modalPointIndex = pointIndex;
       console.log('pointIndex = ', pointIndex, '\n', 'editText = ', this.editText, '\n', 'editText.pointIndex = ', this.editText[pointIndex])
     },
     updateText(newText, pointIndex) {
@@ -72,9 +72,6 @@ export default {
     deletePoint(point) {
       this.notes.points.splice(point, 1);
       console.log(point );
-    },
-    getPointIndex() {
-      return this.pointIndex;
     },
   }
 }
@@ -134,17 +131,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #EF4444;
+  color: #333333;
   padding: 3px;
   width: 22px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 5px;
   cursor: pointer;
 }
 
 
 .points-list__delete-point:hover {
+  color: #EF4444;
   background: #eef1f3;
   transition: all ease-in-out 0.3s;
 }
