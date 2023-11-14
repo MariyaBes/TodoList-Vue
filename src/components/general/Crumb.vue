@@ -3,16 +3,23 @@
     <span class="crumb-line"></span>
     <div class="crumb-title">
       <IconBurger class="crumb-title__burger" />
-      <p class="crumb-title__text">Ваш список задач</p>
+      <p class="crumb-title__text">{{ titleCrumb.title  }}</p>
     </div>
     <span class="crumb-line"></span>
   </div>
 </template>
 
-<script setup>
+<script>
 import IconBurger from "@/components/icons/IconBurger.vue";
-import { defineProps, computed } from "vue";
 
+export default{
+  components: {IconBurger},
+  props: {
+    titleCrumb: {
+      type: Object
+    }
+  }
+}
 </script>
 
 

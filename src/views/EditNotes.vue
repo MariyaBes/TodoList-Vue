@@ -1,5 +1,6 @@
 <template>
-  <Crumb :title-crumb="titleCrumb" :crumbId="2"/>
+  <Crumb :titleCrumb="titleCrumb[1]"/>
+
   <div class="edit-area">
     <ContainerEdit :notes="getNoteById()" @deleteNoteInEdit="deleteNoteInEdit" :noteId="noteId"/>
   </div>
@@ -8,9 +9,16 @@
 <script>
 import Crumb from "@/components/general/Crumb.vue";
 import ContainerEdit from "@/components/edit/ContainerEdit.vue";
+import Undo from "@/components/general/Undo.vue";
 
 export default {
-  components: {ContainerEdit, Crumb},
+  components: {Undo, ContainerEdit, Crumb},
+  data() {
+    return {
+      undoStack: [],
+      localNotes: [...this.notes],
+    }
+  },
   props: {
     titleCrumb: {
       type: Array
@@ -26,20 +34,20 @@ export default {
       required: true
     }
   },
-
   methods: {
     getNoteById() {
       const id = +this.noteId;
       return this.notes.find((note) => note.id === id);
     },
+
     deleteNoteInEdit(currId) {
       const index = this.notes.findIndex(note => note.id === currId);
-      console.log('ID & index -> ', currId, ' ', index);
-       this.notes.splice(index, 1);
+      this.notes.splice(index, 1);
 
       this.saveLocalStorage();
       this.$router.push('/');
     },
+
     saveLocalStorage() {
       localStorage.setItem('notes', JSON.stringify(this.notes));
     },

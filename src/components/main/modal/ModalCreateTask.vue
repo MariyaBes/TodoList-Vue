@@ -20,6 +20,8 @@
                 </li>
               </ul>
             </div>
+
+
           </div>
           <span class="modal-header__line"></span>
 
@@ -45,7 +47,6 @@ import IconAdd from "@/components/icons/IconAdd.vue";
 import ButtonAdd from "@/components/general/ButtonAdd.vue";
 
 export default {
-  name: 'ModalCreateTask',
   components: {ButtonAdd, IconAdd },
   props: {
     show: {
@@ -54,7 +55,7 @@ export default {
     },
     notes: {
       type: Array,
-    }
+    },
   },
   data() {
     return {
@@ -66,7 +67,6 @@ export default {
   methods: {
     closeModal() {
       this.$emit('update:show', false);
-      console.log("ModalCreateTask isVisible", this.show);
     },
     addPoints() {
       if (this.currentPoint.text) {
@@ -84,7 +84,6 @@ export default {
       if (this.currentNote.title ) {
         this.currentNote.id = Date.now();
         this.notes.push(this.currentNote);
-        console.log(typeof this.notes, this.notes);
         this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и текущего элемента
         this.currentPoint.text = '';
         this.isListVisible = false; // Скрываем список после добавления заметки
@@ -102,7 +101,7 @@ export default {
       }
     }
   },
-};
+}
 </script>
 
 <style scoped>

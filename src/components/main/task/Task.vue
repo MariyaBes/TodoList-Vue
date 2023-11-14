@@ -1,5 +1,5 @@
 <template>
-  <div class="task-container" v-if="note" @click="console.log(this.note.id)">
+  <div class="task-container" v-if="note">
     <div class="task-header">
       <p class="task-header__text">{{ note.title }}</p>
       <div class="task-header__button">
@@ -67,6 +67,7 @@ export default {
   background: white;
   box-shadow:  0 11px 35px 0 rgba(0, 0, 0, 0.15);
 }
+
 
 .task-header {
   display: flex;

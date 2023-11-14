@@ -34,7 +34,6 @@ export default defineComponent({
   methods: {
     openModalCreatedTask() {
       this.isVisible = true;
-      console.log("AddNEw",this.isVisible);
     },
     addNewNote(newNote) {
       this.$emit("addNote", newNote);

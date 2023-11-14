@@ -149,8 +149,6 @@ export default {
         );
 
         this.currPoint.text = '';
-
-        console.log(`Пункт в заметке под id - ${this.currPoint.pointId} и она выполнена - ${this.currPoint.isChecked}`);
       }
     },
     changeTitle() {
