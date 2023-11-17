@@ -8,7 +8,7 @@
           <span class="modal-header__line"></span>
         </div>
 
-        <div class="container-edit" @click="console.log('this.localEditText -> ', localEditText, '\n', 'this.pointIndex ->', this.pointIndex, '\n', 'EditText -> ', this.editText)">
+        <div class="container-edit">
           <div class="container-edit-change-title">
             <div class="container-edit-change-title__title">
               <span class="container-edit-change-title__title-text">
@@ -21,7 +21,6 @@
                 placeholder="Изменить название..."
                 class="container-edit-change-title__input"
                 v-model="localEditText"
-                @click="console.log('Modal localEditText -> ', pointIndex)"
             >
           </div>
         </div>
@@ -62,6 +61,7 @@ export default {
     closeModal() {
       this.$emit('update:show', false);
     },
+
     updateTaskText() {
       this.$emit('updateText', this.localEditText, this.pointIndex);
       this.closeModal();

@@ -38,6 +38,7 @@ export default defineComponent({
       this.saveDataToLocalStorage();
       console.log(newNote)
     },
+
     saveDataToLocalStorage() {
       try {
         localStorage.setItem('notes', JSON.stringify(this.notes));
@@ -46,6 +47,7 @@ export default defineComponent({
       }
     }
   },
+
   mounted() {
     const savedNotes = localStorage.getItem('notes');
     if (savedNotes) {

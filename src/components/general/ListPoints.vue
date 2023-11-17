@@ -1,7 +1,7 @@
 <template>
   <div class="task-content-container">
     <ul class="task-content-points-list">
-      <li v-for="(point, pointId) in items.points" :key="pointId" class="task-content-points-list__item">
+      <li v-for="(point, pointId) in visiblePoints" :key="pointId" class="task-content-points-list__item">
         <label :for="'checkbox-' + pointId" class="points-list__label">
           <div v-if="point.isChecked === true">
             <span class="cbx-true">
@@ -19,6 +19,9 @@
           <span class="points-list__label-text">{{ point.text }}</span>
         </label>
       </li>
+      <li v-if="maxVisiblePoints < items.points.length">
+        <span class="task-content-points-list__item-length">...</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -32,7 +35,16 @@ export default {
     items: {
       type: Object,
       required: true
-    }
+    },
+    maxVisiblePoints: {
+      type: Number,
+      default: 3,
+    },
+  },
+  computed: {
+    visiblePoints() {
+      return this.items.points.slice(0, this.maxVisiblePoints);
+    },
   }
 }
 </script>
@@ -49,10 +61,6 @@ export default {
   padding-left: 0;
 }
 
-.points-list__checkbox {
-  display: none;
-}
-
 .points-list__label {
   display: flex;
   width: 100%;
@@ -63,6 +71,13 @@ export default {
 
 .task-content-points-list__item {
   padding: 3px;
+}
+
+.task-content-points-list__item-length {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333333;
+  padding: 6px;
 }
 
 .task-content-container .cbx-true {

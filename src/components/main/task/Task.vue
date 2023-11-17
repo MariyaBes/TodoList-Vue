@@ -2,29 +2,36 @@
   <div class="task-container" v-if="note">
     <div class="task-header">
       <p class="task-header__text">{{ note.title }}</p>
+
+      <button class="task-button" @click="$router.push({ name: 'edit', params: {noteId: note.id}})">
+        <IconEdit />
+        Изменить
+      </button>
+
+
       <div class="task-header__button">
         <SelectDelete :notes="note" @deleteNote="deleteNote" />
       </div>
+
     </div>
+
     <div class="task-content" v-if="note.points && note.points.length > 0">
-      <ListPoints  :items="note" />
+      <ListPoints  :items="note" :maxVisiblePoints="3"/>
     </div>
 
     <div class="task-content" v-else>
       <p class="task-content__text">Список пуст, добавьте новые задачи.</p>
     </div>
-    <button class="task-button" @click="$router.push({ name: 'edit', params: {noteId: note.id}})">
-        <span class="task-button-edit">Редактировать</span>
-    </button>
   </div>
 </template>
 
 <script>
 import SelectDelete from "@/components/main/SelectDelete.vue";
 import ListPoints from "@/components/general/ListPoints.vue";
+import IconEdit from "@/components/icons/IconEdit.vue";
 
 export default {
-  components: {ListPoints, SelectDelete},
+  components: {IconEdit, ListPoints, SelectDelete},
   props: {
     note: {
       type: Object,
@@ -40,30 +47,31 @@ export default {
 </script>
 
 <style scoped>
-
-@media (max-width: 1700px) {
+@media (min-width: 1700px) {
   .task-container {
     width: 100%;
-    max-width: 387px;
+    max-width: 450px;
   }
 }
 
-@media (max-width: 890px) {
+@media (max-width: 980px) {
   .task-container {
     width: 100%;
+    max-width: 400px;
   }
 }
+
 
 .task-container {
   display: flex;
-  width: 387px;
+  width: 405px;
   padding: 32px;
   align-items: center;
-  gap: 24px 168px;
+  gap: 24px 5%;
   flex-shrink: 0;
   flex-wrap: wrap;
 
-  border-radius: 35px;
+  border-radius: 25px;
   background: white;
   box-shadow:  0 11px 35px 0 rgba(0, 0, 0, 0.15);
 }
@@ -72,13 +80,13 @@ export default {
 .task-header {
   display: flex;
   align-items: center;
+  gap: 5px;
   flex: 1 0 0;
-  flex-wrap: wrap;
 }
 
 .task-header__text {
   color: #333333;
-  width: 250px;
+  width: 200px;
   font-size: 20px;
   font-weight: 700;
   overflow: hidden;
@@ -116,30 +124,27 @@ export default {
 }
 
 .task-button {
-  display: inline-block;
-  padding: 14px 89px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+  display: flex;
+  padding: 5px;
   outline: none;
   border: none;
-  border-radius: 16px;
-  background: linear-gradient(90deg, #2DD4BF 0%, #5EEAD4 100%);
+  width: 110px;
+  height: 32px;
+  gap: 5px;
+  background: transparent;
   cursor: pointer;
-  transition: background 0.5s ease-in-out;
+  border-radius: 8px;
+  list-style: none;
+  justify-content: center;
+  align-items: center;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .task-button:hover {
-  background: linear-gradient(90deg, #14b8a6 0%, #2DD4BF 100%);
-  transition: all ease-in-out 0.3s;
-}
-
-.task-button-edit {
-  color: white;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  background: #eef1f3;
+  transition: all ease-in-out 0.1s;
 }
 
 </style>

@@ -35,21 +35,25 @@
           </div>
         </li>
       </ul>
+
+    <Undo :undoStack="undoStack" @undo="undo" @closeUndo="closeUndo"/>
   </div>
 </template>
 
 <script>
 import IconEdit from "@/components/icons/IconEdit.vue";
 import ModalEditTask from "@/components/edit/modal/ModalEditTask.vue";
+import Undo from "@/components/general/Undo.vue";
 
 export default {
-  components: {ModalEditTask, IconEdit},
+  components: {Undo, ModalEditTask, IconEdit},
   data() {
     return {
       isChecked: false,
       isVisible: false,
       editText: '',
       modalPointIndex: null,
+      undoStack: [],
     }
   },
   props: {
@@ -59,21 +63,42 @@ export default {
     changeCheckbox(point) {
       point.isChecked = !point.isChecked;
     },
+
     openModal(pointIndex) {
       this.isVisible = true;
       this.editText = this.notes.points[pointIndex].text;
       this.modalPointIndex = pointIndex;
-      console.log('pointIndex = ', pointIndex, '\n', 'editText = ', this.editText, '\n', 'editText.pointIndex = ', this.editText[pointIndex])
     },
+
     updateText(newText, pointIndex) {
-      console.log(newText, pointIndex);
       this.notes.points[pointIndex].text = newText;
     },
+
     deletePoint(point) {
+      const deletedPoint = this.notes.points[point];
+
       this.notes.points.splice(point, 1);
-      console.log(point );
+
+      this.undoStack.push({ type: 'deletePoint', index: point, deletedPoint });
+      this.$emit('saveToLocalStorage', this.notes);
     },
-  }
+
+    undo()  {
+      if (this.undoStack.length > 0) {
+        const lastChange = this.undoStack.pop();
+
+        if (lastChange.type === 'deletePoint') {
+          // Восстанавливаем удаленный points
+          this.notes.points.splice(lastChange.index, 0, lastChange.deletedPoint);
+          this.$emit('saveToLocalStorage', this.notes);
+        }
+      }
+    },
+
+    closeUndo() {
+      this.undoStack = [];
+    }
+  },
 }
 </script>
 

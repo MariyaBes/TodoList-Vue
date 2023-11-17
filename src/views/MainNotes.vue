@@ -2,8 +2,10 @@
   <Crumb :titleCrumb="titleCrumb[0]"/>
   <Undo :undoStack="undoStack" @undo="undo" @closeUndo="closeUndo"/>
   <div class="task-area">
+
     <Task v-for="note in notes" :key="note.id" :note="note" @deleteNote="deleteNote"/>
     <AddNewTask :notes="notes" @addNote="createNewNote" :input="input"/>
+
   </div>
 </template>
 <script>
@@ -16,7 +18,7 @@ export default {
   data() {
     return {
       undoStack: [],
-      localNotes: [...this.notes], // Создаем локальную копию массива пропсов
+      localNotes: [...this.notes], // Локальная копия notes
     }
   },
   props: {
@@ -37,7 +39,7 @@ export default {
     deleteNote(noteId) {
       const index = this.notes.findIndex(note => note.id === noteId);
 
-      // Сохраняем предыдущее состояние перед удалением
+      // Сохранение предыдущего состояния перед удалением
       const change = {
         type: 'deleteNote',
         index,
@@ -87,7 +89,7 @@ export default {
   margin-left: auto;
   align-items: flex-start;
   align-content: flex-start;
-  gap: 24px 32px;
+  gap: 20px 40px;
   flex-wrap: wrap;
   margin-bottom: 24px;
 }
@@ -101,9 +103,10 @@ export default {
     align-items: flex-start;
     align-content: flex-start;
     flex-wrap: wrap;
-    gap: 32px 50px;
+    gap: 25px 25px;
     margin-bottom: 50px;
   }
 }
+
 
 </style>

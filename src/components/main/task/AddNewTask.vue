@@ -44,17 +44,31 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media (max-width: 1700px) {
+  .task-container-new {
+    width: 100%;
+    max-width: 405px;
+  }
+}
+
+@media (max-width: 980px) {
+  .task-container-new {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
 .task-container-new {
   display: flex;
-  width: 387px;
-  height: 268px;
+  width: 405px;
+  height: 250px;
   padding: 32px;
   flex-direction: column;
   align-items: center;
   gap: 50px;
   flex-shrink: 0;
 
-  border-radius: 35px;
+  border-radius: 25px;
   background: white;
   box-shadow: 0 11px 35px 0 rgba(0, 0, 0, 0.15);
   cursor: pointer;

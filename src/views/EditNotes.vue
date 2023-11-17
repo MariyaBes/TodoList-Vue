@@ -4,6 +4,7 @@
   <div class="edit-area">
     <ContainerEdit :notes="getNoteById()" @deleteNoteInEdit="deleteNoteInEdit" :noteId="noteId"/>
   </div>
+
 </template>
 
 <script>

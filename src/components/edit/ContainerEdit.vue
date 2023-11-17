@@ -1,10 +1,8 @@
-
 <template>
   <div class="container-edit" >
     <div class="container-edit-header">
       <div class="container-edit-header__title">
         <span class="container-edit-header__title-name">Изменить</span>
-        <IconReturn class="container-edit-header__title-icon" alt="Повторить изменения"/>
       </div>
 
       <div class="container-edit-header__delete" @click="openModalDelete">
@@ -86,11 +84,11 @@
     </div>
 
     <!--    МОДАЛЬНОЕ ОКНО -->
-    <div>
+    <div style="position: absolute">
       <ModalDeleteTask v-model:show="isVisible" @deleteNote="deleteNoteInEdit"/>
     </div>
 
-    <div>
+    <div style="position: absolute">
       <ModalWarn v-model:show="isCancel" @cancelEdits="cancelEdits"/>
     </div>
   </div>
@@ -128,6 +126,7 @@ export default {
     openModalDelete() {
       this.isVisible = true;
     },
+
     openCancelEdits() {
       if (!this.equalsNotes(this.notes, this.originalNotes)) {
         this.isCancel = true;
@@ -135,10 +134,12 @@ export default {
         this.$router.push('/');
       }
     },
+
     deleteNoteInEdit() {
       this.$emit('deleteNoteInEdit', this.notes.id);
       this.isVisible = false;
     },
+
     addPoints() {
       if (this.currPoint.text) {
         this.currPoint.pointId = Date.now();
@@ -151,15 +152,18 @@ export default {
         this.currPoint.text = '';
       }
     },
+
     changeTitle() {
       this.isChangeTitle = true;
       this.originalNotes.title = this.currNotes;
       this.isChangeTitle = false;
     },
+
     cancelEdits() {
       Object.assign(this.notes, JSON.parse(JSON.stringify(this.originalNotes)));
       this.$router.push('/');
     },
+
     saveEdits() {
       const updatedNote = {
         id: this.notes.id,
@@ -170,6 +174,7 @@ export default {
       this.saveDataToLocalStorage(updatedNote);
       this.$router.push('/');
     },
+
     saveDataToLocalStorage(updatedNote) {
       try {
         const savedNotes = localStorage.getItem('notes');
@@ -191,6 +196,7 @@ export default {
         console.error('Ошибка: ', error);
       }
     },
+
     equalsNotes(notes, copyNotes) {
       const key1 = JSON.stringify(notes);
       const key2 = JSON.stringify(copyNotes);

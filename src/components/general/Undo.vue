@@ -2,7 +2,10 @@
   <div class="notification-onStack" v-if="undoStack.length > 0">
     <div class="notification-onStack-content">
       <p class="notification-onStack-content__title">Вернуть заметку?</p>
-      <button @click="undo" class="notification-onStack-content__button">Отменить действие</button>
+      <button @click="undo" class="notification-onStack-content__button">
+        Отменить действие
+        <IconReturn />
+      </button>
 
       <button @click="closeUndo" class="notification-onStack-content-close">X</button>
     </div>
@@ -10,7 +13,10 @@
 </template>
 
 <script>
+import IconReturn from "@/components/icons/IconReturn.vue";
+
 export default {
+  components: {IconReturn},
   props: {
     undoStack: {
       type: Array
@@ -34,8 +40,8 @@ export default {
   position: fixed;
   top: 30px;
   left: 30px;
-  width: 250px;
-  height: 100px;
+  width: 270px;
+  height: 120px;
   padding: 40px;
   border-radius: 15px;
   justify-content: center;
@@ -49,7 +55,9 @@ export default {
 .notification-onStack-content {
   display: flex;
   flex-direction: column;
+  margin-left: -5px;
   gap: 15px;
+  align-items: center;
 }
 
 .notification-onStack-content__title {
@@ -58,12 +66,15 @@ export default {
 }
 
 .notification-onStack-content__button {
+  display: flex;
+  gap: 5px;
   color: #333333;
   background: #94a3b8;
   cursor: pointer;
   outline: none;
   border: none;
-  margin-left: -15px;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(90deg, #e0e1e6 0%, #d1d5db 100%);
   border-radius: 15px;
   padding: 10px 16px;

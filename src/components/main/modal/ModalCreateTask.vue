@@ -2,16 +2,26 @@
   <form @submit.prevent>
     <div v-if="show" class="modal-container-back-screen" @click.stop="closeModal">
       <div @click.stop class="modal-container">
+
         <div class="modal-header">
           <h2 class="modal-header__title">Создать заметку</h2>
           <span class="modal-header__line"></span>
         </div>
+
         <div class="container-edit">
+
           <div class="modal-content-setname">
             <h2 class="modal-content-setname__text"></h2>
-            <input v-model="currentNote.title" type="text" class="modal-content-setname__input" placeholder="Название заметки...">
+            <input
+                v-model="currentNote.title"
+                type="text"
+                class="modal-content-setname__input"
+                placeholder="Название заметки..."
+            >
           </div>
+
           <span class="modal-header__line"></span>
+
           <div class="modal-content-view-add">
             <div class="modal-content-view-add-list" v-if="currentNote.points.length > 0">
               <ul>
@@ -20,20 +30,24 @@
                 </li>
               </ul>
             </div>
-
-
           </div>
+
           <span class="modal-header__line"></span>
 
           <div class="modal-content-add-new-element">
-            <input v-model="currentPoint.text" type="text" class="modal-content-add-new-element__input" placeholder="Добавить элемент...">
 
+            <input
+                v-model="currentPoint.text"
+                type="text"
+                class="modal-content-add-new-element__input"
+                placeholder="Добавить элемент..."
+            >
             <ButtonAdd @addPoints="addPoints"/>
 
           </div>
 
           <div class="modal-content-event">
-            <button @click="addNewNote" class="modal-content-event__button-success">Добавить</button>
+            <button @click="addNewNote" class="modal-content-event__button-success">Создать</button>
             <button @click="closeModal" class="modal-content-event__button-cancel">Отмена</button>
           </div>
         </div>
@@ -60,8 +74,8 @@ export default {
   data() {
     return {
       currentNote: { id: '', title: '', points: [] }, // Здесь хранится текущая заметка
-      currentPoint: { pointId: '', text: '', isChecked: false }, // Здесь хранится текущий элемент
-      isListVisible: false, // Переменная для управления видимостью списка
+      currentPoint: { pointId: '', text: '', isChecked: false }, // А здесь текущий элемент
+      isListVisible: false, // Видимость списка
     };
   },
   methods: {
@@ -77,18 +91,17 @@ export default {
         this.currentPoint.text = ''; // Очищаем текст для новой задачи
         this.isListVisible = true;
 
-        console.log(`Пункт в заметке под id - ${this.currentPoint.pointId} и она выполнена - ${this.currentPoint.isChecked}`);
       }
     },
     addNewNote() {
       if (this.currentNote.title ) {
         this.currentNote.id = Date.now();
         this.notes.push(this.currentNote);
-        this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и текущего элемента
+        this.currentNote = { title: '', points: [] }; // Создаем новые объекты для текущей заметки и элемента
         this.currentPoint.text = '';
         this.isListVisible = false; // Скрываем список после добавления заметки
 
-        this.saveDataToLocalStorage(); // Сохраняем
+        this.saveDataToLocalStorage();
         this.closeModal();
       }
     },
@@ -248,7 +261,6 @@ export default {
   color: white;
   font-size: 18px;
   font-weight: 700;
-
   cursor: pointer;
 }
 
